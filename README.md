@@ -118,4 +118,3 @@ This project is licensed under the **MIT License**.
 **Sebastián Dávila**
 
 Feel free to contribute, open issues, or suggest improvements! 🚀
-

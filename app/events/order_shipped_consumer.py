@@ -3,9 +3,7 @@ from app.config import logger
 
 if __name__ == "__main__":
     try:
-        consumer = BaseConsumer(
-            queue_name="order_shipped_queue", routing_key="order.shipped"
-        )
+        consumer = BaseConsumer(queue_name="order_shipped_queue", routing_key="order.shipped")
         consumer.start_consuming(consumer_callback)
     except KeyboardInterrupt:
         consumer.close()

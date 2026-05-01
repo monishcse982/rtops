@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
 from app.routers import orders, products
-from app.models.database import engine, Base
 
 app = FastAPI()
 

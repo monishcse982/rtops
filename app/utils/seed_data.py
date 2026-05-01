@@ -47,9 +47,7 @@ def seed_orders(db: Session, count: int):
 
         for product in sampled_products:
             quantity = random.randint(1, 5)
-            line_item = LineItem(
-                order_id=order.id, product_id=product.id, quantity=quantity
-            )
+            line_item = LineItem(order_id=order.id, product_id=product.id, quantity=quantity)
             db.add(line_item)
 
         db.commit()

@@ -1,0 +1,98 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [ "--allow-multiple-documents" ]
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: [ "--maxkb=1024" ]
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [ "--fix=lf" ]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+      - id: ruff
+        args: [ "--fix" ]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: forbid-real-k8s-secrets
+        name: forbid committing real Kubernetes secrets
+        entry: >-
+          bash -c 'for file in "$@"; do
+          case "$file" in
+          *secret.example.yml|*secret.example.yaml) continue ;;
+          *secret*.yml|*secret*.yaml) echo "Do not commit real Kubernetes secret files: $file"; exit 1 ;;
+          esac
+          done' --
+        language: system
+        files: '^k8s/.*secret.*\.ya?ml$'
+        pass_filenames: true
+
+      - id: forbid-env-files
+        name: forbid committing env files
+        entry: >-
+          bash -c 'for file in "$@"; do
+          echo "Do not commit env file: $file";
+          done;
+          test "$#" -eq 0' --
+        language: system
+        files: '(^|/)\.env(\..*)?$'
+        pass_filenames: true
+
+      - id: validate-kustomize-build
+        name: validate kustomize build
+        entry: kubectl kustomize k8s/base
+        language: system
+        pass_filenames: false
+        stages: [ pre-push ]
+
+      - id: alembic-check-heads
+        name: check alembic has a single head
+        entry: >-
+          bash -c 'heads=$(uv run alembic heads | wc -l | tr -d " ");
+          test "$heads" = "1" || {
+          echo "Expected exactly one Alembic head, found $heads";
+          uv run alembic heads;
+          exit 1;
+          }'
+        language: system
+        pass_filenames: false
+        stages: [ pre-push ]
+
+      - id: docker-build-check
+        name: docker image builds
+        entry: docker build -t rtops-api:prepush .
+        language: system
+        pass_filenames: false
+        stages: [ pre-push ]
+
+      - id: forbid-env-files
+        name: forbid committing env files
+        entry: >-
+            bash -c 'for file in "$@"; do
+              echo "❌ Do not commit env file: $file";
+              done;
+              test "$#" -eq 0' --
+        language: system
+        files: '(^|/).*\.env$'
+        pass_filenames: true
+
+      - id: forbid-env-variants
+        name: forbid committing env variants
+        entry: >-
+          bash -c 'for file in "$@"; do
+          echo "❌ Do not commit env variant: $file";
+          done;
+          test "$#" -eq 0' --
+        language: system
+        files: '(^|/)\.env(\..*)?$'
+        pass_filenames: true

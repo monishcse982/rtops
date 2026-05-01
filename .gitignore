@@ -35,6 +35,7 @@ k8s/**/secret*.yml
 k8s/**/secret*.yaml
 k8s/**/overlays/
 k8s/**/local/
+k8s/**/secret*.env
 
 # env
 *.env.local

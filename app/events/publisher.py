@@ -33,9 +33,7 @@ class EventPublisher:
             for i in range(5):
                 try:
                     self.connection = pika.BlockingConnection(
-                        pika.ConnectionParameters(
-                            host=rabbitmq_host, credentials=credentials
-                        )
+                        pika.ConnectionParameters(host=rabbitmq_host, credentials=credentials)
                     )
                     self.channel = self.connection.channel()
                     self.channel.exchange_declare(
@@ -43,7 +41,7 @@ class EventPublisher:
                     )
                     logger.info("✅ Connected to RabbitMQ")
                     break
-                except pika.exceptions.AMQPConnectionError as e:
+                except pika.exceptions.AMQPConnectionError:
                     logger.warning(
                         f"⚠️ Attempt {i + 1}/5: Could not connect to RabbitMQ, retrying in 5 seconds..."
                     )

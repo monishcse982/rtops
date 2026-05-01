@@ -14,10 +14,7 @@ class StandardPricing(PricingStrategy):
     """Standard pricing strategy (no discount, no taxes)"""
 
     def calculate(self, order):
-        total = sum(
-            line_item.product.price * line_item.quantity
-            for line_item in order.line_items
-        )
+        total = sum(line_item.product.price * line_item.quantity for line_item in order.line_items)
         return total
 
 
@@ -29,8 +26,7 @@ class TaxedPricing(PricingStrategy):
 
     def calculate(self, order):
         subtotal = sum(
-            line_item.product.price * line_item.quantity
-            for line_item in order.line_items
+            line_item.product.price * line_item.quantity for line_item in order.line_items
         )
         tax = subtotal * self.tax_rate
         return subtotal + tax
@@ -45,8 +41,7 @@ class DiscountPricing(PricingStrategy):
 
     def calculate(self, order):
         subtotal = sum(
-            line_item.product.price * line_item.quantity
-            for line_item in order.line_items
+            line_item.product.price * line_item.quantity for line_item in order.line_items
         )
         if subtotal > self.discount_threshold:
             discount = subtotal * self.discount_rate

@@ -9,7 +9,12 @@ from app.events.publisher import EventPublisher
 from app.models.database import get_db
 from app.models.line_item_model import LineItem
 from app.models.order_model import Order
-from app.models.order_schemas import OrderResponse, OrderCreate, OrderDetailResponse, OrderStatusResponse
+from app.models.order_schemas import (
+    OrderResponse,
+    OrderCreate,
+    OrderDetailResponse,
+    OrderStatusResponse,
+)
 from app.models.product_model import Product
 from app.services.pricing import StandardPricing, TaxedPricing
 
@@ -58,9 +63,7 @@ async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
 
     # Add line items
     item_ids = [item.item_id for item in order_data.items]
-    available_products = {
-        p.id: p for p in db.query(Product).filter(Product.id.in_(item_ids)).all()
-    }
+    available_products = {p.id: p for p in db.query(Product).filter(Product.id.in_(item_ids)).all()}
     missing = [str(id) for id in item_ids if id not in available_products]
 
     if missing:
@@ -112,8 +115,8 @@ async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
     },
 )
 async def get_order(
-        order_id: int = Path(..., gt=0, description="The ID of the order to retrieve"),
-        db: Session = Depends(get_db),
+    order_id: int = Path(..., gt=0, description="The ID of the order to retrieve"),
+    db: Session = Depends(get_db),
 ):
     """
     Retrieve detailed information about a specific order.
@@ -129,9 +132,7 @@ async def get_order(
     """
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
     # Eagerly load line items with their related items to reduce database queries
     line_items = (
@@ -175,8 +176,8 @@ async def get_order(
     },
 )
 async def pay_order(
-        order_id: int = Path(..., gt=0, description="ID of the order to pay"),
-        db: Session = Depends(get_db),
+    order_id: int = Path(..., gt=0, description="ID of the order to pay"),
+    db: Session = Depends(get_db),
 ):
     """
     Simulate payment for an order.
@@ -198,9 +199,7 @@ async def pay_order(
     """
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
     if order.status != "pending_payment":
         raise HTTPException(
@@ -239,10 +238,8 @@ async def pay_order(
     },
 )
 async def mark_order_ready_to_ship(
-        order_id: int = Path(
-            ..., gt=0, description="ID of the order to mark as ready to ship"
-        ),
-        db: Session = Depends(get_db),
+    order_id: int = Path(..., gt=0, description="ID of the order to mark as ready to ship"),
+    db: Session = Depends(get_db),
 ):
     """
     Mark an order as ready to ship.
@@ -264,9 +261,7 @@ async def mark_order_ready_to_ship(
     """
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
     if order.status != "in_preparation":
         raise HTTPException(
@@ -296,16 +291,14 @@ async def mark_order_ready_to_ship(
     status_code=status.HTTP_200_OK,
     summary="Mark order as shipped",
     responses={
-        200: {
-            "description": "Order status updated to shipped and Shipped event published"
-        },
+        200: {"description": "Order status updated to shipped and Shipped event published"},
         400: {"description": "Invalid state for shipping"},
         404: {"description": "Order not found"},
     },
 )
 async def mark_order_shipped(
-        order_id: int = Path(..., gt=0, description="ID of the order to mark as shipped"),
-        db: Session = Depends(get_db),
+    order_id: int = Path(..., gt=0, description="ID of the order to mark as shipped"),
+    db: Session = Depends(get_db),
 ):
     """
     Mark an order as shipped.
@@ -327,9 +320,7 @@ async def mark_order_shipped(
     """
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
     if order.status != "ready_to_ship":
         raise HTTPException(
@@ -359,16 +350,14 @@ async def mark_order_shipped(
     status_code=status.HTTP_200_OK,
     summary="Mark order as delivered",
     responses={
-        200: {
-            "description": "Order status updated to delivered and Delivered event published"
-        },
+        200: {"description": "Order status updated to delivered and Delivered event published"},
         400: {"description": "Invalid state for delivery"},
         404: {"description": "Order not found"},
     },
 )
 async def mark_order_delivered(
-        order_id: int = Path(..., gt=0, description="ID of the order to mark as delivered"),
-        db: Session = Depends(get_db),
+    order_id: int = Path(..., gt=0, description="ID of the order to mark as delivered"),
+    db: Session = Depends(get_db),
 ):
     """
     Mark an order as delivered.
@@ -390,9 +379,7 @@ async def mark_order_delivered(
     """
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
     if order.status != "shipped":
         raise HTTPException(

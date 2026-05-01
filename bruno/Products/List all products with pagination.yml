@@ -7,7 +7,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/products/"
+  url: "{{baseUrl}}/api/products/?page=1&page_size=20&sort_by=id&sort_order=asc"
   params:
     - name: page
       value: "1"
@@ -41,7 +41,7 @@ http:
       description: Filter by stock availability
       disabled: true
     - name: search
-      value: ""
+      value: House
       type: query
       description: Search in name and description
       disabled: true

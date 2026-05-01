@@ -46,9 +46,7 @@ class ShippingInfo(BaseModel):
     tracking_number: str = Field(..., description="Package tracking number")
 
     class Config:
-        json_schema_extra = {
-            "example": {"carrier": "FedEx", "tracking_number": "FX123456789US"}
-        }
+        json_schema_extra = {"example": {"carrier": "FedEx", "tracking_number": "FX123456789US"}}
 
 
 class OrderStatusResponse(BaseModel):
@@ -78,9 +76,7 @@ class OrderCreate(BaseModel):
 
     class Config:
         json_schema_extra = {
-            "example": {
-                "items": [{"item_id": 1, "quantity": 2}, {"item_id": 3, "quantity": 1}]
-            }
+            "example": {"items": [{"item_id": 1, "quantity": 2}, {"item_id": 3, "quantity": 1}]}
         }
 
 

@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yml
   - configmap.yml
-  - secret.yml
   - postgres-service.yml
   - postgres-statefulset.yml
   - rabbitmq-service.yml
@@ -13,3 +12,8 @@ resources:
   - cache-statefulset.yml
   - api-service.yml
   - api-deployment.yml
+
+secretGenerator:
+  - name: rtops-secret
+    envs:
+      - secret.env

@@ -25,17 +25,13 @@ router = APIRouter()
 )
 async def list_products(
     page: int = Query(1, ge=1, description="Page number, starting from 1"),
-    page_size: int = Query(
-        20, ge=1, le=100, description="Number of items per page (1-100)"
-    ),
+    page_size: int = Query(20, ge=1, le=100, description="Number of items per page (1-100)"),
     sort_by: str = Query("id", description="Field to sort by (id, name, price, stock)"),
     sort_order: str = Query("asc", description="Sort order (asc, desc)"),
     min_price: Optional[float] = Query(None, ge=0, description="Minimum price filter"),
     max_price: Optional[float] = Query(None, gt=0, description="Maximum price filter"),
     in_stock: Optional[bool] = Query(None, description="Filter by stock availability"),
-    search: Optional[str] = Query(
-        None, min_length=2, description="Search in name and description"
-    ),
+    search: Optional[str] = Query(None, min_length=2, description="Search in name and description"),
     db: Session = Depends(get_db),
 ):
     """
@@ -175,9 +171,7 @@ async def add_product(product: ProductCreate, db: Session = Depends(get_db)):
     """
     try:
         # Check if product name already exists
-        existing_product = (
-            db.query(Product).filter(Product.name == product.name).first()
-        )
+        existing_product = db.query(Product).filter(Product.name == product.name).first()
         if existing_product:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -254,9 +248,7 @@ async def update_product(
 
         # Check for name conflict if name is being changed
         if product_data.name != product.name:
-            existing = (
-                db.query(Product).filter(Product.name == product_data.name).first()
-            )
+            existing = db.query(Product).filter(Product.name == product_data.name).first()
             if existing:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,

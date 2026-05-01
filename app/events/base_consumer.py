@@ -23,20 +23,16 @@ class BaseConsumer:
         for i in range(5):
             try:
                 self.connection = pika.BlockingConnection(
-                    pika.ConnectionParameters(
-                        host=rabbitmq_host, credentials=credentials
-                    )
+                    pika.ConnectionParameters(host=rabbitmq_host, credentials=credentials)
                 )
                 break
-            except pika.exceptions.AMQPConnectionError as e:
+            except pika.exceptions.AMQPConnectionError:
                 logger.warning(
-                    f"Attempt {i+1}/5: Unable to connect to RabbitMQ, retrying in 5 seconds..."
+                    f"Attempt {i + 1}/5: Unable to connect to RabbitMQ, retrying in 5 seconds..."
                 )
                 time.sleep(5)
         else:
-            raise EventConsumptionError(
-                "Could not connect to RabbitMQ after 5 attempts"
-            )
+            raise EventConsumptionError("Could not connect to RabbitMQ after 5 attempts")
 
         self.channel = self.connection.channel()
         # Declare exchange and queue as durable

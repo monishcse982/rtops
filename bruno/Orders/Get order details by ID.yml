@@ -7,12 +7,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/orders/:order_id"
-  params:
-    - name: order_id
-      value: ""
-      type: path
-      description: The ID of the order to retrieve
+  url: "{{baseUrl}}/api/orders/5"
   auth: inherit
 
 settings:

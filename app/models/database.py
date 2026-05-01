@@ -6,9 +6,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Load database URL from environment variable
-DATABASE_URL = getenv(
-    "DATABASE_URL", "postgresql://user:password@localhost/orders_db"
-)
+DATABASE_URL = getenv("DATABASE_URL", "postgresql://user:password@localhost/orders_db")
 
 
 MAX_RETRIES = 5
@@ -18,7 +16,7 @@ for i in range(MAX_RETRIES):
         engine = create_engine(DATABASE_URL)
         break
     except OperationalError:
-        print(f"Database not ready, retrying ({i+1}/{MAX_RETRIES})...")
+        print(f"Database not ready, retrying ({i + 1}/{MAX_RETRIES})...")
         sleep(5)
 
 # Create session factory
