@@ -1,0 +1,132 @@
+info:
+  name: Simulate payment and mark order as paid
+  type: http
+  seq: 3
+  tags:
+    - Orders
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/orders/:order_id/pay"
+  params:
+    - name: order_id
+      value: ""
+      type: path
+      description: ID of the order to pay
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: Order status updated to in_preparation and OrderPaid event published
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/pay"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to pay
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "Order successfully marked as shipped",
+            "order_id": 123,
+            "status": "shipped",
+            "tracking_info": {
+              "carrier": "FedEx",
+              "tracking_number": "FX123456789US"
+            }
+          }
+  - name: 400 Response
+    description: Invalid state for payment
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/pay"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to pay
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 404 Response
+    description: Order not found
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/pay"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to pay
+    response:
+      status: 404
+      statusText: Not Found
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/pay"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to pay
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+
+docs: |-
+  Simulate payment for an order.
+
+  ## Path Parameters
+  - **order_id**: Unique identifier of the order to be paid.
+
+  ## Process
+  - Validates that the order exists and is in 'pending_payment' status.
+  - Updates the order status to 'in_preparation' (simulating successful payment).
+  - Publishes the 'OrderPaid' event to trigger subsequent processing.
+
+  ## Returns
+  - An OrderStatusResponse containing a success message, the order ID, and the updated status.
+
+  ## Raises
+  - 404 Not Found: If the order does not exist.
+  - 400 Bad Request: If the order is not in 'pending_payment' state.

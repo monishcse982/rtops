@@ -1,0 +1,149 @@
+info:
+  name: Create a new product
+  type: http
+  seq: 2
+  tags:
+    - Products
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/products/"
+  body:
+    type: json
+    data: |-
+      {
+        "description": "High-precision gaming mouse with adjustable DPI",
+        "name": "Gaming Mouse",
+        "price": 49.99,
+        "stock": 100
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    description: Product successfully created
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "created_at": "2025-03-20T18:30:45.123Z",
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "id": 1,
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+  - name: 400 Response
+    description: Invalid product data
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 409 Response
+    description: Product with this name already exists
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 409
+      statusText: Conflict
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+
+docs: |-
+  Create a new product in the inventory.
+
+  ## Request Body
+  - `name`: Product name (required)
+  - `description`: Optional product description
+  - `price`: Product price (required, > 0)
+  - `stock`: Available inventory (required, >= 0)
+
+  ## Returns
+  The created product with its assigned ID
+
+  ## Raises
+  - `400 Bad Request`: If the product data is invalid
+  - `409 Conflict`: If a product with the same name already exists

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration
+  namespace: rtops
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migration
+          image: rtops-api:dev
+          imagePullPolicy: Never
+          command:
+            - sh
+            - -c
+            - "/app/.venv/bin/alembic upgrade head"
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rtops-secret
+                  key: DATABASE_URL

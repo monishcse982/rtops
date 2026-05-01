@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed
+  namespace: rtops
+  labels:
+    app: seed
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: seed
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: rtops-api:dev
+          imagePullPolicy: Never
+          command:
+            - /app/.venv/bin/python
+            - -m
+            - app.utils.seed_data
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rtops-secret
+                  key: DATABASE_URL
+            - name: NUM_PRODUCTS
+              value: "10"
+            - name: NUM_ORDERS
+              value: "5"

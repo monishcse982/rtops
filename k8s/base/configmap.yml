@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rtops-config
+  namespace: rtops
+data:
+  POSTGRES_DB: rtops_db
+  POSTGRES_USER: rtops_pg_user
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_USER: rtops_rmq_user
+  REDIS_URL: redis://cache:6379/0

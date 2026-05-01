@@ -1,0 +1,202 @@
+info:
+  name: Update an existing product
+  type: http
+  seq: 4
+  tags:
+    - Products
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/products/:product_id"
+  params:
+    - name: product_id
+      value: ""
+      type: path
+      description: The ID of the product to update
+  body:
+    type: json
+    data: |-
+      {
+        "description": "High-precision gaming mouse with adjustable DPI",
+        "name": "Gaming Mouse",
+        "price": 49.99,
+        "stock": 100
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: Product successfully updated
+    request:
+      url: "{{baseUrl}}/api/products/:product_id"
+      method: PUT
+      params:
+        - name: product_id
+          value: ""
+          type: path
+          description: The ID of the product to update
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "created_at": "2025-03-20T18:30:45.123Z",
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "id": 1,
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+  - name: 400 Response
+    description: Invalid product data
+    request:
+      url: "{{baseUrl}}/api/products/:product_id"
+      method: PUT
+      params:
+        - name: product_id
+          value: ""
+          type: path
+          description: The ID of the product to update
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 404 Response
+    description: Product not found
+    request:
+      url: "{{baseUrl}}/api/products/:product_id"
+      method: PUT
+      params:
+        - name: product_id
+          value: ""
+          type: path
+          description: The ID of the product to update
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 404
+      statusText: Not Found
+      body:
+        type: text
+        data: ""
+  - name: 409 Response
+    description: Name conflict with existing product
+    request:
+      url: "{{baseUrl}}/api/products/:product_id"
+      method: PUT
+      params:
+        - name: product_id
+          value: ""
+          type: path
+          description: The ID of the product to update
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 409
+      statusText: Conflict
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/products/:product_id"
+      method: PUT
+      params:
+        - name: product_id
+          value: ""
+          type: path
+          description: The ID of the product to update
+      body:
+        type: json
+        data: |-
+          {
+            "description": "High-precision gaming mouse with adjustable DPI",
+            "name": "Gaming Mouse",
+            "price": 49.99,
+            "stock": 100
+          }
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+
+docs: |-
+  Update an existing product's information.
+
+  ## Path Parameter
+  - `product_id`: The unique identifier of the product to update
+
+  ## Request Body
+  - `name`: Updated product name
+  - `description`: Updated product description
+  - `price`: Updated product price
+  - `stock`: Updated inventory level
+
+  ## Returns
+  The updated product information
+
+  ## Raises
+  - `404 Not Found`: If the product doesn't exist
+  - `409 Conflict`: If updating would create a name conflict

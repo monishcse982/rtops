@@ -1,0 +1,132 @@
+info:
+  name: Mark order as ready to ship
+  type: http
+  seq: 4
+  tags:
+    - Orders
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
+  params:
+    - name: order_id
+      value: ""
+      type: path
+      description: ID of the order to mark as ready to ship
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: Order status updated to ready_to_ship and OrderReadyToShip event published
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to mark as ready to ship
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "Order successfully marked as shipped",
+            "order_id": 123,
+            "status": "shipped",
+            "tracking_info": {
+              "carrier": "FedEx",
+              "tracking_number": "FX123456789US"
+            }
+          }
+  - name: 400 Response
+    description: Invalid state for marking as ready to ship
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to mark as ready to ship
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 404 Response
+    description: Order not found
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to mark as ready to ship
+    response:
+      status: 404
+      statusText: Not Found
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
+      method: POST
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: ID of the order to mark as ready to ship
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+
+docs: |-
+  Mark an order as ready to ship.
+
+  ## Path Parameters
+  - **order_id**: Unique identifier of the order to update.
+
+  ## Process
+  - Validates that the order exists and is currently in 'in_preparation' state.
+  - Updates the order status to 'ready_to_ship'.
+  - Publishes the 'OrderReadyToShip' event to notify the carrier for pickup.
+
+  ## Returns
+  - An OrderStatusResponse containing a success message, the order ID, and the updated status.
+
+  ## Raises
+  - 404 Not Found: If the order does not exist.
+  - 400 Bad Request: If the order is not in 'in_preparation' state.

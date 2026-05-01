@@ -1,0 +1,249 @@
+info:
+  name: List all products with pagination
+  type: http
+  seq: 1
+  tags:
+    - Products
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/products/"
+  params:
+    - name: page
+      value: "1"
+      type: query
+      description: Page number, starting from 1
+    - name: page_size
+      value: "20"
+      type: query
+      description: Number of items per page (1-100)
+    - name: sort_by
+      value: id
+      type: query
+      description: Field to sort by (id, name, price, stock)
+    - name: sort_order
+      value: asc
+      type: query
+      description: Sort order (asc, desc)
+    - name: min_price
+      value: ""
+      type: query
+      description: Minimum price filter
+      disabled: true
+    - name: max_price
+      value: ""
+      type: query
+      description: Maximum price filter
+      disabled: true
+    - name: in_stock
+      value: ""
+      type: query
+      description: Filter by stock availability
+      disabled: true
+    - name: search
+      value: ""
+      type: query
+      description: Search in name and description
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: List of products successfully retrieved
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: GET
+      params:
+        - name: page
+          value: "1"
+          type: query
+          description: Page number, starting from 1
+        - name: page_size
+          value: "20"
+          type: query
+          description: Number of items per page (1-100)
+        - name: sort_by
+          value: id
+          type: query
+          description: Field to sort by (id, name, price, stock)
+        - name: sort_order
+          value: asc
+          type: query
+          description: Sort order (asc, desc)
+        - name: min_price
+          value: ""
+          type: query
+          description: Minimum price filter
+          disabled: true
+        - name: max_price
+          value: ""
+          type: query
+          description: Maximum price filter
+          disabled: true
+        - name: in_stock
+          value: ""
+          type: query
+          description: Filter by stock availability
+          disabled: true
+        - name: search
+          value: ""
+          type: query
+          description: Search in name and description
+          disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "created_at": "2025-03-20T18:30:45.123Z",
+                "description": "High-precision gaming mouse with adjustable DPI",
+                "id": 1,
+                "name": "Gaming Mouse",
+                "price": 49.99,
+                "stock": 100
+              }
+            ],
+            "page": 1,
+            "page_size": 20,
+            "pages": 3,
+            "total": 42
+          }
+  - name: 400 Response
+    description: Invalid query parameters
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: GET
+      params:
+        - name: page
+          value: "1"
+          type: query
+          description: Page number, starting from 1
+        - name: page_size
+          value: "20"
+          type: query
+          description: Number of items per page (1-100)
+        - name: sort_by
+          value: id
+          type: query
+          description: Field to sort by (id, name, price, stock)
+        - name: sort_order
+          value: asc
+          type: query
+          description: Sort order (asc, desc)
+        - name: min_price
+          value: ""
+          type: query
+          description: Minimum price filter
+          disabled: true
+        - name: max_price
+          value: ""
+          type: query
+          description: Maximum price filter
+          disabled: true
+        - name: in_stock
+          value: ""
+          type: query
+          description: Filter by stock availability
+          disabled: true
+        - name: search
+          value: ""
+          type: query
+          description: Search in name and description
+          disabled: true
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: GET
+      params:
+        - name: page
+          value: "1"
+          type: query
+          description: Page number, starting from 1
+        - name: page_size
+          value: "20"
+          type: query
+          description: Number of items per page (1-100)
+        - name: sort_by
+          value: id
+          type: query
+          description: Field to sort by (id, name, price, stock)
+        - name: sort_order
+          value: asc
+          type: query
+          description: Sort order (asc, desc)
+        - name: min_price
+          value: ""
+          type: query
+          description: Minimum price filter
+          disabled: true
+        - name: max_price
+          value: ""
+          type: query
+          description: Maximum price filter
+          disabled: true
+        - name: in_stock
+          value: ""
+          type: query
+          description: Filter by stock availability
+          disabled: true
+        - name: search
+          value: ""
+          type: query
+          description: Search in name and description
+          disabled: true
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+
+docs: |-
+  Retrieve a paginated list of products with sorting and filtering options.
+
+  ## Query Parameters
+  - `page`: Page number (starts at 1)
+  - `page_size`: Number of items per page (1-100)
+  - `sort_by`: Field to sort by (id, name, price, stock)
+  - `sort_order`: Sort direction (asc, desc)
+  - `min_price`: Filter by minimum price
+  - `max_price`: Filter by maximum price
+  - `in_stock`: Filter by stock availability
+  - `search`: Search term for name and description
+
+  ## Returns
+  A paginated list of products with total count information

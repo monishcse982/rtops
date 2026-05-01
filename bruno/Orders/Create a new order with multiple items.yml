@@ -1,0 +1,202 @@
+info:
+  name: Create a new order with multiple items
+  type: http
+  seq: 1
+  tags:
+    - Orders
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/orders/"
+  body:
+    type: json
+    data: |-
+      {
+        "items": [
+          {
+            "item_id": 1,
+            "quantity": 2
+          },
+          {
+            "item_id": 3,
+            "quantity": 1
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    description: Successful Response
+    request:
+      url: "{{baseUrl}}/api/orders/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "item_id": 1,
+                "quantity": 2
+              },
+              {
+                "item_id": 3,
+                "quantity": 1
+              }
+            ]
+          }
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "Order created successfully",
+            "order_id": 123,
+            "status": "created",
+            "total_price": 59.99
+          }
+  - name: 400 Response
+    description: Invalid request data
+    request:
+      url: "{{baseUrl}}/api/orders/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "item_id": 1,
+                "quantity": 2
+              },
+              {
+                "item_id": 3,
+                "quantity": 1
+              }
+            ]
+          }
+    response:
+      status: 400
+      statusText: Bad Request
+      body:
+        type: text
+        data: ""
+  - name: 404 Response
+    description: One or more items not found
+    request:
+      url: "{{baseUrl}}/api/orders/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "item_id": 1,
+                "quantity": 2
+              },
+              {
+                "item_id": 3,
+                "quantity": 1
+              }
+            ]
+          }
+    response:
+      status: 404
+      statusText: Not Found
+      body:
+        type: text
+        data: ""
+  - name: 422 Response
+    description: Validation Error
+    request:
+      url: "{{baseUrl}}/api/orders/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "item_id": 1,
+                "quantity": 2
+              },
+              {
+                "item_id": 3,
+                "quantity": 1
+              }
+            ]
+          }
+    response:
+      status: 422
+      statusText: Unprocessable Entity
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "detail": [
+              {
+                "loc": [],
+                "msg": "",
+                "type": "",
+                "input": "",
+                "ctx": {}
+              }
+            ]
+          }
+  - name: 500 Response
+    description: Server error
+    request:
+      url: "{{baseUrl}}/api/orders/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "items": [
+              {
+                "item_id": 1,
+                "quantity": 2
+              },
+              {
+                "item_id": 3,
+                "quantity": 1
+              }
+            ]
+          }
+    response:
+      status: 500
+      statusText: Internal Server Error
+      body:
+        type: text
+        data: ""
+
+docs: |-
+  Create a new order with multiple line items.
+
+  ## Request Body
+  - `items`: List of items to include in the order, each with an item_id and quantity
+
+  ## Returns
+  - `order_id`: ID of the created order
+  - `total_price`: Calculated total price (including tax)
+  - `status`: Order status
+
+  ## Raises
+  - `400 Bad Request`: If the order has no items
+  - `404 Not Found`: If any of the requested items don't exist
