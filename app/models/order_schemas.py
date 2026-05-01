@@ -2,20 +2,14 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.line_item_schemas import LineItemDetail, LineItemCreate
 
 
 class OrderDetailResponse(BaseModel):
-    order_id: int
-    status: str
-    created_at: datetime
-    items: List[LineItemDetail]
-    total_price: Decimal
-
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "order_id": 123,
                 "status": "created",
@@ -39,24 +33,27 @@ class OrderDetailResponse(BaseModel):
                 "total_price": 59.97,
             }
         }
+    )
+
+    order_id: int
+    status: str
+    created_at: datetime
+    items: List[LineItemDetail]
+    total_price: Decimal
 
 
 class ShippingInfo(BaseModel):
+    model_config = ConfigDict(
+        json_schema_extra={"example": {"carrier": "FedEx", "tracking_number": "FX123456789US"}}
+    )
+
     carrier: str = Field(..., description="Shipping carrier name")
     tracking_number: str = Field(..., description="Package tracking number")
 
-    class Config:
-        json_schema_extra = {"example": {"carrier": "FedEx", "tracking_number": "FX123456789US"}}
-
 
 class OrderStatusResponse(BaseModel):
-    message: str
-    order_id: int
-    status: str
-    tracking_info: Optional[ShippingInfo] = None
-
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "message": "Order successfully marked as shipped",
                 "order_id": 123,
@@ -67,27 +64,28 @@ class OrderStatusResponse(BaseModel):
                 },
             }
         }
+    )
+
+    message: str
+    order_id: int
+    status: str
+    tracking_info: Optional[ShippingInfo] = None
 
 
 class OrderCreate(BaseModel):
-    items: List[LineItemCreate] = Field(
-        ..., min_items=1, description="Items to include in the order"
-    )
-
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {"items": [{"item_id": 1, "quantity": 2}, {"item_id": 3, "quantity": 1}]}
         }
+    )
+    items: List[LineItemCreate] = Field(
+        ..., min_length=1, description="Items to include in the order"
+    )
 
 
 class OrderResponse(BaseModel):
-    message: str
-    order_id: int
-    total_price: Decimal
-    status: str
-
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "message": "Order created successfully",
                 "order_id": 123,
@@ -95,3 +93,9 @@ class OrderResponse(BaseModel):
                 "status": "created",
             }
         }
+    )
+
+    message: str
+    order_id: int
+    total_price: Decimal
+    status: str

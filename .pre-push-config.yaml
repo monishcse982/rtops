@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: unit-tests
+        name: run unit tests
+        entry: uv run pytest tests -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

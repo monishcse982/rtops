@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from enum import Enum
 
 from sqlalchemy import Column, Integer, String, DateTime, Enum as SQLEnum
@@ -23,7 +23,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     status = Column(SQLEnum(OrderStatus), default=OrderStatus.CREATED, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
     tracking_number = Column(String, nullable=True)
     carrier = Column(String, nullable=True)
 
@@ -34,9 +34,17 @@ class Order(Base):
         """Calculates the total price using a pricing strategy"""
         return pricing_strategy.calculate(self)
 
-    def mark_as_paid(self):
-        """Mark the order as paid"""
+    def mark_as_pending_payment(self):
+        """Mark the order as awaiting payment"""
         self.status = OrderStatus.PENDING_PAYMENT
+
+    def mark_as_paid(self):
+        """Mark the order as paid and ready for preparation"""
+        self.status = OrderStatus.IN_PREPARATION
+
+    def mark_as_ready_to_ship(self):
+        """Mark the order as ready to ship"""
+        self.status = OrderStatus.READY_TO_SHIP
 
     def mark_as_shipped(self):
         """Mark the order as shipped"""

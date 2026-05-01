@@ -23,7 +23,7 @@ settings:
 
 examples:
   - name: 200 Response
-    description: Order status updated to in_preparation and OrderPaid event published
+    description: Order status updated to in_preparation and order.paid event published
     request:
       url: "{{baseUrl}}/api/orders/:order_id/pay"
       method: POST
@@ -42,13 +42,10 @@ examples:
         type: json
         data: |-
           {
-            "message": "Order successfully marked as shipped",
+            "message": "Order marked as paid",
             "order_id": 123,
-            "status": "shipped",
-            "tracking_info": {
-              "carrier": "FedEx",
-              "tracking_number": "FX123456789US"
-            }
+            "status": "in_preparation",
+            "tracking_info": null
           }
   - name: 400 Response
     description: Invalid state for payment
@@ -122,7 +119,7 @@ docs: |-
   ## Process
   - Validates that the order exists and is in 'pending_payment' status.
   - Updates the order status to 'in_preparation' (simulating successful payment).
-  - Publishes the 'OrderPaid' event to trigger subsequent processing.
+  - Publishes the 'order.paid' event to trigger subsequent processing.
 
   ## Returns
   - An OrderStatusResponse containing a success message, the order ID, and the updated status.

@@ -27,7 +27,3 @@ spec:
                 secretKeyRef:
                   name: rtops-secret
                   key: DATABASE_URL
-            - name: NUM_PRODUCTS
-              value: "10"
-            - name: NUM_ORDERS
-              value: "5"

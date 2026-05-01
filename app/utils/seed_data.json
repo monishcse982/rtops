@@ -1,0 +1,356 @@
+{
+  "products": [
+    {"name": "Starter Mug", "description": "Entry-level ceramic mug for daily use", "price": "12.50", "stock": 250},
+    {"name": "Travel Flask", "description": "Vacuum flask for commuters", "price": "29.90", "stock": 140},
+    {"name": "Office Chair Mat", "description": "Hard floor protective chair mat", "price": "64.00", "stock": 32},
+    {"name": "Wireless Keyboard", "description": "Compact keyboard with rechargeable battery", "price": "79.99", "stock": 48},
+    {"name": "Wireless Mouse", "description": "Low-latency ergonomic mouse", "price": "44.95", "stock": 75},
+    {"name": "USB-C Dock", "description": "Docking station with dual monitor support", "price": "159.00", "stock": 18},
+    {"name": "Noise Canceling Headset", "description": "Over-ear headset with boom mic", "price": "189.99", "stock": 21},
+    {"name": "Standing Desk", "description": "Electric sit-stand desk frame and top", "price": "549.00", "stock": 12},
+    {"name": "LED Desk Lamp", "description": "Dimmable lamp with USB charging port", "price": "39.50", "stock": 90},
+    {"name": "Cable Organizer Kit", "description": "Velcro ties, sleeves and cable clips", "price": "18.25", "stock": 200},
+    {"name": "Monitor Arm", "description": "Single monitor VESA arm mount", "price": "88.00", "stock": 44},
+    {"name": "Webcam 4K", "description": "High resolution conferencing webcam", "price": "129.99", "stock": 16},
+    {"name": "Notebook Set", "description": "Three ruled notebooks bundle", "price": "15.75", "stock": 160},
+    {"name": "Mechanical Pencil Pack", "description": "Pack of 10 pencils with refill leads", "price": "9.99", "stock": 300},
+    {"name": "Whiteboard Planner", "description": "Monthly wall planner whiteboard", "price": "34.99", "stock": 55},
+    {"name": "Thermal Printer", "description": "Compact shipping-label printer", "price": "219.00", "stock": 9},
+    {"name": "Warehouse Scanner", "description": "Bluetooth barcode scanner", "price": "145.49", "stock": 14},
+    {"name": "Packaging Tape Pack", "description": "Set of heavy-duty packing tapes", "price": "22.10", "stock": 0},
+    {"name": "Return Labels", "description": "Printable adhesive return-label sheets", "price": "11.80", "stock": 85},
+    {"name": "Premium Fountain Pen", "description": "Metal-bodied pen gift edition", "price": "249.95", "stock": 5},
+    {"name": "Laptop Backpack", "description": "Water-resistant backpack with laptop sleeve", "price": "94.50", "stock": 27},
+    {"name": "Portable SSD", "description": "2TB USB-C external solid state drive", "price": "189.00", "stock": 22},
+    {"name": "Desk Fan", "description": "Quiet USB-powered airflow fan", "price": "27.40", "stock": 61},
+    {"name": "Conference Speaker", "description": "Portable speakerphone for meetings", "price": "133.30", "stock": 19},
+    {"name": "HDMI Cable 2m", "description": "High speed braided HDMI cable", "price": "13.20", "stock": 500},
+    {"name": "Ethernet Cable 5m", "description": "Cat6 patch cable", "price": "11.10", "stock": 350},
+    {"name": "Surge Protector", "description": "Eight-outlet surge strip", "price": "31.75", "stock": 95},
+    {"name": "External Monitor 27", "description": "27-inch QHD IPS display", "price": "279.00", "stock": 26},
+    {"name": "Laptop Stand", "description": "Aluminum adjustable stand", "price": "49.95", "stock": 73},
+    {"name": "Desk Pad XL", "description": "Large felt desk pad", "price": "24.60", "stock": 112},
+    {"name": "Ergonomic Footrest", "description": "Adjustable under-desk footrest", "price": "42.80", "stock": 34},
+    {"name": "Task Stool", "description": "Rolling stool for flexible workstations", "price": "118.00", "stock": 11},
+    {"name": "Document Shredder", "description": "Cross-cut office shredder", "price": "209.50", "stock": 8},
+    {"name": "Label Refills", "description": "Thermal label refill rolls", "price": "27.00", "stock": 64},
+    {"name": "Storage Bin Set", "description": "Stackable archive bins", "price": "58.90", "stock": 29},
+    {"name": "Packing Paper", "description": "Recyclable kraft packing paper", "price": "16.40", "stock": 120},
+    {"name": "Bubble Mailer Pack", "description": "Padded mailers assorted sizes", "price": "28.20", "stock": 87},
+    {"name": "Receipt Printer", "description": "Compact POS receipt printer", "price": "172.00", "stock": 7},
+    {"name": "Cash Drawer", "description": "Lockable POS cash drawer", "price": "139.90", "stock": 6},
+    {"name": "Tablet Stand", "description": "Countertop tablet stand", "price": "46.70", "stock": 40},
+    {"name": "Phone Charger Pack", "description": "Set of USB-C fast chargers", "price": "59.99", "stock": 102},
+    {"name": "Bluetooth Earbuds", "description": "Noise-isolating earbuds", "price": "89.00", "stock": 58},
+    {"name": "Planner Sticky Notes", "description": "Color-coded sticky tab kit", "price": "8.75", "stock": 240},
+    {"name": "Executive Notebook", "description": "Hardcover notebook with elastic closure", "price": "21.35", "stock": 67},
+    {"name": "Glass Whiteboard", "description": "Tempered glass magnetic whiteboard", "price": "184.00", "stock": 13},
+    {"name": "Projector Mini", "description": "Portable room projector", "price": "319.00", "stock": 9},
+    {"name": "Video Light Panel", "description": "Adjustable light panel for streaming", "price": "96.20", "stock": 23},
+    {"name": "Microphone Arm", "description": "Boom arm for podcast microphones", "price": "37.80", "stock": 41},
+    {"name": "Podcast Microphone", "description": "USB condenser microphone", "price": "149.00", "stock": 17},
+    {"name": "Tripod Stand", "description": "Adjustable tripod for cameras and lights", "price": "54.50", "stock": 38},
+    {"name": "Printer Paper Box", "description": "5-ream office paper box", "price": "41.90", "stock": 52},
+    {"name": "Ink Cartridge Bundle", "description": "CMYK printer cartridge bundle", "price": "112.30", "stock": 15},
+    {"name": "Archive Labels", "description": "Shelf and archive adhesive labels", "price": "14.25", "stock": 96},
+    {"name": "Mouse Pad Gel", "description": "Gel wrist support mouse pad", "price": "17.95", "stock": 88},
+    {"name": "Keyboard Wrist Rest", "description": "Memory foam keyboard wrist rest", "price": "19.45", "stock": 93},
+    {"name": "Portable Monitor", "description": "15-inch USB-C portable display", "price": "229.00", "stock": 14},
+    {"name": "Laptop Sleeve 14", "description": "Padded laptop sleeve for 14-inch devices", "price": "26.80", "stock": 77},
+    {"name": "Router Backup", "description": "Business-grade backup Wi-Fi router", "price": "199.00", "stock": 10},
+    {"name": "UPS Battery Unit", "description": "Desktop backup power unit", "price": "259.00", "stock": 8},
+    {"name": "Cleaning Wipes", "description": "Electronics-safe cleaning wipes", "price": "10.60", "stock": 170},
+    {"name": "Screen Cleaner Spray", "description": "Micro-mist cleaner with cloth", "price": "12.15", "stock": 111}
+  ],
+  "orders": [
+    {
+      "status": "created",
+      "line_items": [
+        {"product_name": "Starter Mug", "quantity": 2},
+        {"product_name": "Notebook Set", "quantity": 1}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "Wireless Keyboard", "quantity": 1},
+        {"product_name": "Wireless Mouse", "quantity": 1}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "USB-C Dock", "quantity": 1},
+        {"product_name": "Cable Organizer Kit", "quantity": 3}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "LED Desk Lamp", "quantity": 2},
+        {"product_name": "Monitor Arm", "quantity": 1}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "DHL",
+      "tracking_number": "DHL-100200300",
+      "line_items": [
+        {"product_name": "Webcam 4K", "quantity": 1},
+        {"product_name": "Conference Speaker", "quantity": 1}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "FedEx",
+      "tracking_number": "FDX-99887766",
+      "line_items": [
+        {"product_name": "Standing Desk", "quantity": 1}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "Thermal Printer", "quantity": 1},
+        {"product_name": "Return Labels", "quantity": 4}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "Warehouse Scanner", "quantity": 2},
+        {"product_name": "Packaging Tape Pack", "quantity": 5}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "Laptop Backpack", "quantity": 1},
+        {"product_name": "Portable SSD", "quantity": 1},
+        {"product_name": "Desk Fan", "quantity": 2}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "UPS",
+      "tracking_number": "UPS-5544332211",
+      "line_items": [
+        {"product_name": "Office Chair Mat", "quantity": 1}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "BlueDart",
+      "tracking_number": "BD-IND-442211",
+      "line_items": [
+        {"product_name": "Premium Fountain Pen", "quantity": 1},
+        {"product_name": "Starter Mug", "quantity": 6}
+      ]
+    },
+    {
+      "status": "created",
+      "line_items": [
+        {"product_name": "Mechanical Pencil Pack", "quantity": 8},
+        {"product_name": "Whiteboard Planner", "quantity": 1},
+        {"product_name": "Travel Flask", "quantity": 3}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "External Monitor 27", "quantity": 2},
+        {"product_name": "HDMI Cable 2m", "quantity": 4},
+        {"product_name": "Surge Protector", "quantity": 2}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "Laptop Stand", "quantity": 3},
+        {"product_name": "Desk Pad XL", "quantity": 3},
+        {"product_name": "Ergonomic Footrest", "quantity": 2}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "Task Stool", "quantity": 1},
+        {"product_name": "Document Shredder", "quantity": 1}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "Delhivery",
+      "tracking_number": "DLV-00987123",
+      "line_items": [
+        {"product_name": "Label Refills", "quantity": 6},
+        {"product_name": "Storage Bin Set", "quantity": 2},
+        {"product_name": "Packing Paper", "quantity": 10}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "Amazon Shipping",
+      "tracking_number": "AMZ-77112233",
+      "line_items": [
+        {"product_name": "Bubble Mailer Pack", "quantity": 4},
+        {"product_name": "Receipt Printer", "quantity": 1},
+        {"product_name": "Cash Drawer", "quantity": 1}
+      ]
+    },
+    {
+      "status": "created",
+      "line_items": [
+        {"product_name": "Tablet Stand", "quantity": 2},
+        {"product_name": "Phone Charger Pack", "quantity": 5},
+        {"product_name": "Bluetooth Earbuds", "quantity": 2}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "Planner Sticky Notes", "quantity": 12},
+        {"product_name": "Executive Notebook", "quantity": 7},
+        {"product_name": "Glass Whiteboard", "quantity": 1}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "Projector Mini", "quantity": 1},
+        {"product_name": "Video Light Panel", "quantity": 2},
+        {"product_name": "Tripod Stand", "quantity": 2}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "Podcast Microphone", "quantity": 2},
+        {"product_name": "Microphone Arm", "quantity": 2}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "Aramex",
+      "tracking_number": "ARMX-55118822",
+      "line_items": [
+        {"product_name": "Printer Paper Box", "quantity": 3},
+        {"product_name": "Ink Cartridge Bundle", "quantity": 2},
+        {"product_name": "Archive Labels", "quantity": 8}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "Xpressbees",
+      "tracking_number": "XB-22331144",
+      "line_items": [
+        {"product_name": "Mouse Pad Gel", "quantity": 4},
+        {"product_name": "Keyboard Wrist Rest", "quantity": 4}
+      ]
+    },
+    {
+      "status": "created",
+      "line_items": [
+        {"product_name": "Portable Monitor", "quantity": 1},
+        {"product_name": "Laptop Sleeve 14", "quantity": 2},
+        {"product_name": "Cleaning Wipes", "quantity": 6}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "Router Backup", "quantity": 1},
+        {"product_name": "UPS Battery Unit", "quantity": 1},
+        {"product_name": "Ethernet Cable 5m", "quantity": 6}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "Screen Cleaner Spray", "quantity": 8},
+        {"product_name": "Cleaning Wipes", "quantity": 10},
+        {"product_name": "Desk Fan", "quantity": 3}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "Travel Flask", "quantity": 10},
+        {"product_name": "Starter Mug", "quantity": 12},
+        {"product_name": "Notebook Set", "quantity": 10}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "DTDC",
+      "tracking_number": "DTDC-66009911",
+      "line_items": [
+        {"product_name": "Wireless Keyboard", "quantity": 4},
+        {"product_name": "Wireless Mouse", "quantity": 4},
+        {"product_name": "Webcam 4K", "quantity": 2}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "Ecom Express",
+      "tracking_number": "ECOM-45451212",
+      "line_items": [
+        {"product_name": "Standing Desk", "quantity": 2},
+        {"product_name": "Monitor Arm", "quantity": 4},
+        {"product_name": "Cable Organizer Kit", "quantity": 6}
+      ]
+    },
+    {
+      "status": "created",
+      "line_items": [
+        {"product_name": "Premium Fountain Pen", "quantity": 2},
+        {"product_name": "Executive Notebook", "quantity": 3},
+        {"product_name": "Planner Sticky Notes", "quantity": 5}
+      ]
+    },
+    {
+      "status": "pending_payment",
+      "line_items": [
+        {"product_name": "Thermal Printer", "quantity": 2},
+        {"product_name": "Label Refills", "quantity": 10},
+        {"product_name": "Return Labels", "quantity": 12}
+      ]
+    },
+    {
+      "status": "in_preparation",
+      "line_items": [
+        {"product_name": "Warehouse Scanner", "quantity": 3},
+        {"product_name": "Storage Bin Set", "quantity": 5},
+        {"product_name": "Archive Labels", "quantity": 10}
+      ]
+    },
+    {
+      "status": "ready_to_ship",
+      "line_items": [
+        {"product_name": "Laptop Backpack", "quantity": 6},
+        {"product_name": "Portable SSD", "quantity": 6},
+        {"product_name": "Phone Charger Pack", "quantity": 8}
+      ]
+    },
+    {
+      "status": "shipped",
+      "carrier": "FedEx",
+      "tracking_number": "FDX-77001122",
+      "line_items": [
+        {"product_name": "Conference Speaker", "quantity": 3},
+        {"product_name": "Bluetooth Earbuds", "quantity": 6},
+        {"product_name": "Noise Canceling Headset", "quantity": 2}
+      ]
+    },
+    {
+      "status": "delivered",
+      "carrier": "DHL",
+      "tracking_number": "DHL-55002211",
+      "line_items": [
+        {"product_name": "Portable Monitor", "quantity": 2},
+        {"product_name": "USB-C Dock", "quantity": 2},
+        {"product_name": "Laptop Stand", "quantity": 2}
+      ]
+    }
+  ]
+}

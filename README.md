@@ -96,6 +96,7 @@ make pgadmin-open
 
 ## 📖 Documentation
 
+- [Project Overview](docs/project_overview.md)
 - [System Architecture](docs/system_architechture.md)
 - [API Endpoints](http://localhost:8000/docs)
 - [Business logic](docs/business_logic.md)

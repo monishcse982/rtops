@@ -23,7 +23,7 @@ settings:
 
 examples:
   - name: 200 Response
-    description: Order status updated to ready_to_ship and OrderReadyToShip event published
+    description: Order status updated to ready_to_ship and order.ready.to.ship event published
     request:
       url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
       method: POST
@@ -42,13 +42,10 @@ examples:
         type: json
         data: |-
           {
-            "message": "Order successfully marked as shipped",
+            "message": "Order marked as ready to ship",
             "order_id": 123,
-            "status": "shipped",
-            "tracking_info": {
-              "carrier": "FedEx",
-              "tracking_number": "FX123456789US"
-            }
+            "status": "ready_to_ship",
+            "tracking_info": null
           }
   - name: 400 Response
     description: Invalid state for marking as ready to ship
@@ -122,7 +119,7 @@ docs: |-
   ## Process
   - Validates that the order exists and is currently in 'in_preparation' state.
   - Updates the order status to 'ready_to_ship'.
-  - Publishes the 'OrderReadyToShip' event to notify the carrier for pickup.
+  - Publishes the 'order.ready.to.ship' event to notify the carrier for pickup.
 
   ## Returns
   - An OrderStatusResponse containing a success message, the order ID, and the updated status.

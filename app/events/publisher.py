@@ -1,10 +1,13 @@
 import os
-import pika
+import json
 import time
+from decimal import Decimal
+
+import pika
+
 from app.config import logger
 from app.exceptions import EventPublishingError
-import json
-from decimal import Decimal
+from app.request_context import ensure_request_id
 
 
 class EnhancedJSONEncoder(json.JSONEncoder):
@@ -26,6 +29,7 @@ class EventPublisher:
             rabbitmq_host = os.getenv("RABBITMQ_HOST", "rabbitmq")
             rabbitmq_user = os.getenv("RABBITMQ_USER", "user")
             rabbitmq_pass = os.getenv("RABBITMQ_PASS", "password")
+            last_error = None
 
             credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_pass)
 
@@ -37,33 +41,41 @@ class EventPublisher:
                     )
                     self.channel = self.connection.channel()
                     self.channel.exchange_declare(
-                        exchange=self.exchange_name, exchange_type="direct"
+                        exchange=self.exchange_name, exchange_type="direct", durable=True
                     )
-                    logger.info("✅ Connected to RabbitMQ")
+                    logger.info("Connected to RabbitMQ")
                     break
-                except pika.exceptions.AMQPConnectionError:
+                except pika.exceptions.AMQPConnectionError as exc:
+                    last_error = exc
                     logger.warning(
-                        f"⚠️ Attempt {i + 1}/5: Could not connect to RabbitMQ, retrying in 5 seconds..."
+                        f"Attempt {i + 1}/5: Could not connect to RabbitMQ, retrying in 5 seconds..."
                     )
                     time.sleep(5)
             else:
-                raise Exception("❌ Failed to connect to RabbitMQ after 5 attempts.")
+                raise EventPublishingError(
+                    self.exchange_name,
+                    last_error,
+                    phase="connect",
+                    retryable=True,
+                )
 
     def publish_event(self, event_type, data):
         """Publishes an event to RabbitMQ with error handling"""
         self._connect()  # Ensure connection is established before publishing
+        payload = dict(data)
+        payload.setdefault("request_id", ensure_request_id())
         try:
             self.channel.basic_publish(
                 exchange=self.exchange_name,
                 routing_key=event_type,
-                body=json.dumps(data, cls=EnhancedJSONEncoder),
+                body=json.dumps(payload, cls=EnhancedJSONEncoder),
                 properties=pika.BasicProperties(
                     delivery_mode=2  # Ensures message persistence
                 ),
             )
-            logger.info(f"📡 Event published: {event_type} - {data}")
+            logger.info(f"Event published: {event_type} - {payload}")
         except Exception as e:
-            error_message = EventPublishingError(event_type, e)
+            error_message = EventPublishingError(event_type, e, phase="publish", retryable=True)
             logger.error(f"❌ {error_message}")
             raise error_message
 

@@ -1,4 +1,5 @@
 from app.config import logger
+from app.exceptions import MalformedEventError, UnknownEventError
 
 from app.events.handlers import (
     handle_order_created,
@@ -18,11 +19,14 @@ def register_handler(event_type: str, handler_func):
 
 def dispatch_event(event: dict):
     event_type = event.get("event")
-    if event_type in handlers:
-        logger.info(f"Dispatching event: {event_type}")
-        return handlers[event_type](event)
-    else:
-        logger.warning(f"No handler registered for event: {event_type}")
+    if not event_type:
+        raise MalformedEventError(event_data=event, error="missing event field")
+
+    if event_type not in handlers:
+        raise UnknownEventError(event)
+
+    logger.info(f"Dispatching event: {event_type}")
+    return handlers[event_type](event)
 
 
 register_handler("order.created", handle_order_created)

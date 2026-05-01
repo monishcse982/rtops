@@ -1,7 +1,8 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Path, Body
+from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from starlette import status
@@ -12,6 +13,44 @@ from app.models.product_model import Product
 from app.models.product_schemas import ProductList, ProductResponse, ProductCreate
 
 router = APIRouter()
+VALID_PRODUCT_SORT_FIELDS = {"id", "name", "price", "stock", "created_at"}
+
+
+def get_product_or_404(db: Session, product_id: int) -> Product:
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product with ID {product_id} not found",
+        )
+    return product
+
+
+def apply_product_filters(
+    query,
+    *,
+    search: Optional[str],
+    min_price: Optional[float],
+    max_price: Optional[float],
+    in_stock: Optional[bool],
+):
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            Product.name.ilike(search_term)
+            | func.coalesce(Product.description, "").ilike(search_term)
+        )
+
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+
+    if in_stock is not None:
+        query = query.filter(Product.stock > 0 if in_stock else Product.stock == 0)
+
+    return query
 
 
 @router.get(
@@ -50,34 +89,25 @@ async def list_products(
     ## Returns
     A paginated list of products with total count information
     """
-    # Start with base query
-    query = db.query(Product)
-
-    # Apply filters
-    if search:
-        search_term = f"%{search}%"
-        query = query.filter(
-            (Product.name.ilike(search_term)) | (Product.description.ilike(search_term))
+    if min_price is not None and max_price is not None and min_price > max_price:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="min_price cannot be greater than max_price",
         )
 
-    if min_price is not None:
-        query = query.filter(Product.price >= min_price)
-
-    if max_price is not None:
-        query = query.filter(Product.price <= max_price)
-
-    if in_stock is not None:
-        if in_stock:
-            query = query.filter(Product.stock > 0)
-        else:
-            query = query.filter(Product.stock == 0)
+    query = apply_product_filters(
+        db.query(Product),
+        search=search,
+        min_price=min_price,
+        max_price=max_price,
+        in_stock=in_stock,
+    )
 
     # Get total count before pagination
     total_items = query.count()
 
     # Apply sorting
-    valid_sort_fields = {"id", "name", "price", "stock", "created_at"}
-    if sort_by not in valid_sort_fields:
+    if sort_by not in VALID_PRODUCT_SORT_FIELDS:
         sort_by = "id"
 
     sort_column = getattr(Product, sort_by)
@@ -132,13 +162,7 @@ async def get_product(
     ## Raises
     - **404 Not Found**: If the product with the specified ID doesn't exist
     """
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with ID {product_id} not found",
-        )
-    return product
+    return get_product_or_404(db, product_id)
 
 
 @router.post(
@@ -169,38 +193,32 @@ async def add_product(product: ProductCreate, db: Session = Depends(get_db)):
     - `400 Bad Request`: If the product data is invalid
     - `409 Conflict`: If a product with the same name already exists
     """
-    try:
-        # Check if product name already exists
-        existing_product = db.query(Product).filter(Product.name == product.name).first()
-        if existing_product:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail=f"Product with name '{product.name}' already exists",
-            )
-
-        new_product = Product(
-            name=product.name,
-            description=product.description,
-            price=product.price,
-            stock=product.stock,
-            created_at=datetime.utcnow(),
+    if db.query(Product.id).filter(Product.name == product.name).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Product with name '{product.name}' already exists",
         )
-        db.add(new_product)
+
+    new_product = Product(
+        name=product.name,
+        description=product.description,
+        price=product.price,
+        stock=product.stock,
+        created_at=datetime.now(UTC),
+    )
+    db.add(new_product)
+
+    try:
         db.commit()
-        db.refresh(new_product)
-        return new_product
     except IntegrityError:
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not create product due to database constraint violation",
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Product with name '{product.name}' already exists",
         )
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An unexpected error occurred: {str(e)}",
-        )
+
+    db.refresh(new_product)
+    return new_product
 
 
 @router.put(
@@ -239,16 +257,11 @@ async def update_product(
     - `409 Conflict`: If updating would create a name conflict
     """
     try:
-        product = db.query(Product).filter(Product.id == product_id).first()
-        if not product:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Product with ID {product_id} not found",
-            )
+        product = get_product_or_404(db, product_id)
 
         # Check for name conflict if name is being changed
         if product_data.name != product.name:
-            existing = db.query(Product).filter(Product.name == product_data.name).first()
+            existing = db.query(Product.id).filter(Product.name == product_data.name).first()
             if existing:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
@@ -260,7 +273,7 @@ async def update_product(
             setattr(product, key, value)
 
         # Update the updated_at timestamp
-        product.updated_at = datetime.utcnow()
+        product.updated_at = datetime.now(UTC)
 
         db.commit()
         db.refresh(product)
@@ -300,18 +313,9 @@ async def delete_product(
     - `404 Not Found`: If the product doesn't exist
     - `400 Bad Request`: If the product cannot be deleted (e.g., referenced by orders)
     """
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with ID {product_id} not found",
-        )
+    product = get_product_or_404(db, product_id)
 
-    # Check if product is used in any line items (you may need to adjust this query)
-    if (
-        hasattr(Product, "line_items")
-        and db.query(LineItem).filter(LineItem.item_id == product_id).count() > 0
-    ):
+    if db.query(LineItem.id).filter(LineItem.product_id == product_id).first():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot delete product that is referenced in existing orders",
