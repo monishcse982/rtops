@@ -10,11 +10,11 @@ from app.models.database import get_db
 from app.models.line_item_model import LineItem
 from app.models.order_model import Order, OrderStatus
 from app.models.order_schemas import (
-    OrderCreate,
-    OrderDetailResponse,
-    OrderResponse,
-    OrderStatusResponse,
-    ShippingInfo,
+    OrderCreateRequest,
+    OrderCreateResponse,
+    OrderDetailsResponse,
+    OrderStatusUpdateResponse,
+    ShippingDetails,
 )
 from app.models.product_model import Product
 from app.services.pricing import StandardPricing, TaxedPricing
@@ -66,7 +66,7 @@ def transition_order(
     event_type: str,
     action: str,
     message: str,
-) -> OrderStatusResponse:
+) -> OrderStatusUpdateResponse:
     order = get_order_or_404(db, order_id)
     require_order_status(order, expected_status, action)
 
@@ -76,12 +76,12 @@ def transition_order(
     publish_pending_events(db, limit=20)
     logger.info(f"Order {order.id} {action} and event queued.")
 
-    return OrderStatusResponse(
+    return OrderStatusUpdateResponse(
         message=message,
         order_id=order.id,
         status=order_status_value(order),
         tracking_info=(
-            ShippingInfo(carrier=order.carrier, tracking_number=order.tracking_number)
+            ShippingDetails(carrier=order.carrier, tracking_number=order.tracking_number)
             if order.carrier and order.tracking_number
             else None
         ),
@@ -90,7 +90,7 @@ def transition_order(
 
 @router.post(
     "/orders/",
-    response_model=OrderResponse,
+    response_model=OrderCreateResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new order with multiple items",
     responses={
@@ -99,12 +99,15 @@ def transition_order(
         500: {"description": "Server error"},
     },
 )
-async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
-    item_ids = [item.item_id for item in order_data.items]
+async def create_order(order_data: OrderCreateRequest, db: Session = Depends(get_db)):
+    product_ids = [item.product_id for item in order_data.items]
     available_products = {
-        product.id: product for product in db.query(Product).filter(Product.id.in_(item_ids)).all()
+        product.id: product
+        for product in db.query(Product).filter(Product.id.in_(product_ids)).all()
     }
-    missing = [str(item_id) for item_id in item_ids if item_id not in available_products]
+    missing = [
+        str(product_id) for product_id in product_ids if product_id not in available_products
+    ]
 
     if missing:
         raise HTTPException(
@@ -116,7 +119,7 @@ async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
     db.add(new_order)
 
     for item_data in order_data.items:
-        product = available_products[item_data.item_id]
+        product = available_products[item_data.product_id]
         new_order.line_items.append(LineItem(product=product, quantity=item_data.quantity))
 
     db.flush()
@@ -134,7 +137,7 @@ async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
 
     logger.info(f"Order {new_order.id} created with total price: ${total_price:.2f}")
 
-    return OrderResponse(
+    return OrderCreateResponse(
         message="Order created successfully",
         order_id=new_order.id,
         total_price=total_price,
@@ -144,7 +147,7 @@ async def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
 
 @router.get(
     "/orders/{order_id}",
-    response_model=OrderDetailResponse,
+    response_model=OrderDetailsResponse,
     summary="Get order details by ID",
     responses={
         200: {"description": "Order details retrieved successfully"},
@@ -166,7 +169,7 @@ async def get_order(
 
     items_detail = [
         {
-            "item_id": line.product_id,
+            "product_id": line.product_id,
             "name": line.product.name,
             "quantity": line.quantity,
             "unit_price": line.product.price,
@@ -175,7 +178,7 @@ async def get_order(
         for line in order.line_items
     ]
     total_price = order.calculate_total(StandardPricing())
-    return OrderDetailResponse(
+    return OrderDetailsResponse(
         order_id=order.id,
         status=order_status_value(order),
         created_at=order.created_at,
@@ -186,7 +189,7 @@ async def get_order(
 
 @router.post(
     "/orders/{order_id}/pay",
-    response_model=OrderStatusResponse,
+    response_model=OrderStatusUpdateResponse,
     status_code=status.HTTP_200_OK,
     summary="Simulate payment and mark order as paid",
     responses={
@@ -214,7 +217,7 @@ async def pay_order(
 
 @router.post(
     "/orders/{order_id}/ready-to-ship",
-    response_model=OrderStatusResponse,
+    response_model=OrderStatusUpdateResponse,
     status_code=status.HTTP_200_OK,
     summary="Mark order as ready to ship",
     responses={
@@ -242,7 +245,7 @@ async def mark_order_ready_to_ship(
 
 @router.post(
     "/orders/{order_id}/shipped",
-    response_model=OrderStatusResponse,
+    response_model=OrderStatusUpdateResponse,
     status_code=status.HTTP_200_OK,
     summary="Mark order as shipped",
     responses={
@@ -268,7 +271,7 @@ async def mark_order_shipped(
 
 @router.post(
     "/orders/{order_id}/delivered",
-    response_model=OrderStatusResponse,
+    response_model=OrderStatusUpdateResponse,
     status_code=status.HTTP_200_OK,
     summary="Mark order as delivered",
     responses={

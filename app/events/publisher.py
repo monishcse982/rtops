@@ -10,6 +10,16 @@ from app.exceptions import EventPublishingError
 from app.request_context import ensure_request_id
 
 
+def _get_int_env(name: str, default: int) -> int:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    try:
+        return int(raw_value)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be an integer") from exc
+
+
 class EnhancedJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Decimal):
@@ -30,11 +40,13 @@ class EventPublisher:
             rabbitmq_user = os.getenv("RABBITMQ_USER", "user")
             rabbitmq_pass = os.getenv("RABBITMQ_PASS", "password")
             last_error = None
+            max_retries = max(_get_int_env("RABBITMQ_CONNECT_MAX_RETRIES", 5), 1)
+            retry_delay_seconds = max(_get_int_env("RABBITMQ_CONNECT_RETRY_DELAY_SECONDS", 5), 0)
 
             credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_pass)
 
             # Retry loop in case RabbitMQ is not ready yet
-            for i in range(5):
+            for i in range(max_retries):
                 try:
                     self.connection = pika.BlockingConnection(
                         pika.ConnectionParameters(host=rabbitmq_host, credentials=credentials)
@@ -47,11 +59,20 @@ class EventPublisher:
                     break
                 except pika.exceptions.AMQPConnectionError as exc:
                     last_error = exc
+                    if i == max_retries - 1:
+                        break
                     logger.warning(
-                        f"Attempt {i + 1}/5: Could not connect to RabbitMQ, retrying in 5 seconds..."
+                        "Attempt %s/%s: Could not connect to RabbitMQ, retrying in %s seconds...",
+                        i + 1,
+                        max_retries,
+                        retry_delay_seconds,
                     )
-                    time.sleep(5)
+                    if retry_delay_seconds > 0:
+                        time.sleep(retry_delay_seconds)
             else:
+                pass
+
+            if self.connection is None or self.connection.is_closed:
                 raise EventPublishingError(
                     self.exchange_name,
                     last_error,

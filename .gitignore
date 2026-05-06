@@ -21,7 +21,10 @@ venv/
 .coverage
 htmlcov/
 pytest_cache/
-
+reports/allure-results/
+reports/allure-report/
+allure-report
+.*.env
 # Build artifacts
 *.egg-info/
 dist/
@@ -41,3 +44,4 @@ k8s/**/secret*.env
 # env
 *.env.local
 *.env.dev
+.github

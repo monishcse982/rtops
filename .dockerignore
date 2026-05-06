@@ -4,4 +4,4 @@ __pycache__/
 .git/
 k8s/**/secret*.yml
 k8s/**/secret*.yaml
-.env*
+.local.env
