@@ -4,7 +4,7 @@ NS=rtops
 KUSTOMIZE_DIR=k8s/base
 K3D_CONFIG=k8s/local/k3d-cluster.yaml
 
-.PHONY: build import deploy migrate seed status logs port-forward port-forward-api port-forward-rabbitmq port-forward-postgres port-forward-cache port-forward-all stop-port-forward cluster-up wait-cluster wait-infra wait-api down cluster-down reset reset-all all
+.PHONY: build import deploy migrate seed status logs port-forward port-forward-api port-forward-rabbitmq port-forward-postgres port-forward-cache port-forward-all stop-port-forward cluster-up wait-cluster wait-infra wait-api down cluster-down destroy reset reset-all all
 
 build:
 	docker build -t $(IMAGE) .
@@ -42,6 +42,19 @@ cluster-down:
 		k3d cluster delete $(CLUSTER); \
 	else \
 		echo "Cluster $(CLUSTER) does not exist. Nothing to delete."; \
+	fi
+
+destroy: stop-port-forward cluster-down
+	@if [ -d .tmp ]; then \
+		rm -rf .tmp; \
+		echo "Removed .tmp/"; \
+	else \
+		echo ".tmp does not exist. Nothing to remove."; \
+	fi
+	@if docker image inspect $(IMAGE) >/dev/null 2>&1; then \
+		docker image rm $(IMAGE); \
+	else \
+		echo "Image $(IMAGE) does not exist. Nothing to remove."; \
 	fi
 
 deploy:

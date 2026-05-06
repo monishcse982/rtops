@@ -10,7 +10,11 @@ from starlette import status
 from app.models.database import get_db
 from app.models.line_item_model import LineItem
 from app.models.product_model import Product
-from app.models.product_schemas import ProductList, ProductResponse, ProductCreate
+from app.models.product_schemas import (
+    ProductCreateRequest,
+    ProductDetailsResponse,
+    ProductListResponse,
+)
 
 router = APIRouter()
 VALID_PRODUCT_SORT_FIELDS = {"id", "name", "price", "stock", "created_at"}
@@ -55,7 +59,7 @@ def apply_product_filters(
 
 @router.get(
     "/products/",
-    response_model=ProductList,
+    response_model=ProductListResponse,
     summary="List all products with pagination",
     responses={
         200: {"description": "List of products successfully retrieved"},
@@ -139,7 +143,7 @@ async def list_products(
 
 @router.get(
     "/products/{product_id}",
-    response_model=ProductResponse,
+    response_model=ProductDetailsResponse,
     summary="Get detailed product information",
     responses={
         200: {"description": "Product details successfully retrieved"},
@@ -167,7 +171,7 @@ async def get_product(
 
 @router.post(
     "/products/",
-    response_model=ProductResponse,
+    response_model=ProductDetailsResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new product",
     responses={
@@ -176,7 +180,7 @@ async def get_product(
         409: {"description": "Product with this name already exists"},
     },
 )
-async def add_product(product: ProductCreate, db: Session = Depends(get_db)):
+async def add_product(product: ProductCreateRequest, db: Session = Depends(get_db)):
     """
     Create a new product in the inventory.
 
@@ -223,7 +227,7 @@ async def add_product(product: ProductCreate, db: Session = Depends(get_db)):
 
 @router.put(
     "/products/{product_id}",
-    response_model=ProductResponse,
+    response_model=ProductDetailsResponse,
     summary="Update an existing product",
     responses={
         200: {"description": "Product successfully updated"},
@@ -234,7 +238,7 @@ async def add_product(product: ProductCreate, db: Session = Depends(get_db)):
 )
 async def update_product(
     product_id: int = Path(..., gt=0, description="The ID of the product to update"),
-    product_data: ProductCreate = Body(...),
+    product_data: ProductCreateRequest = Body(...),
     db: Session = Depends(get_db),
 ):
     """

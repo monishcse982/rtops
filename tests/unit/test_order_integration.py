@@ -22,11 +22,12 @@ def test_create_order_writes_outbox_event_with_request_id(client, db_session, mo
     response = client.post(
         "/api/orders/",
         headers={"X-Request-ID": "req-create-001"},
-        json={"items": [{"item_id": product.id, "quantity": 2}]},
+        json={"items": [{"product_id": product.id, "quantity": 2}]},
     )
 
     assert response.status_code == 201
     assert response.headers["X-Request-ID"] == "req-create-001"
+    assert response.headers["X-Trace-ID"] == "req-create-001"
 
     outbox_events = db_session.query(OutboxEvent).all()
     assert len(outbox_events) == 1
@@ -52,11 +53,12 @@ def test_create_order_generates_request_id_when_missing(client, db_session, monk
 
     response = client.post(
         "/api/orders/",
-        json={"items": [{"item_id": product.id, "quantity": 1}]},
+        json={"items": [{"product_id": product.id, "quantity": 1}]},
     )
 
     assert response.status_code == 201
     generated_request_id = response.headers["X-Request-ID"]
+    assert response.headers["X-Trace-ID"] == generated_request_id
     UUID(generated_request_id)
 
     outbox_event = db_session.query(OutboxEvent).one()
@@ -83,6 +85,7 @@ def test_pay_order_creates_paid_outbox_event(client, db_session, monkeypatch):
 
     assert response.status_code == 200
     assert response.headers["X-Request-ID"] == "req-pay-001"
+    assert response.headers["X-Trace-ID"] == "req-pay-001"
 
     db_session.expire_all()
     refreshed = db_session.get(Order, order.id)
@@ -97,3 +100,34 @@ def test_pay_order_creates_paid_outbox_event(client, db_session, monkeypatch):
 
     assert len(published_events) == 1
     assert published_events[0][0] == "order.paid"
+
+
+def test_create_order_can_skip_synchronous_outbox_publish(client, db_session, monkeypatch):
+    monkeypatch.setenv("OUTBOX_PUBLISH_ON_REQUEST", "false")
+
+    publish_calls = []
+
+    def fake_publish_event(event_type, payload):
+        publish_calls.append((event_type, payload))
+
+    monkeypatch.setattr(outbox_module.event_publisher, "publish_event", fake_publish_event)
+
+    product = Product(name="Hub", description="USB hub", price=Decimal("25.00"), stock=8)
+    db_session.add(product)
+    db_session.commit()
+
+    response = client.post(
+        "/api/orders/",
+        headers={"X-Request-ID": "req-create-no-publish"},
+        json={"items": [{"product_id": product.id, "quantity": 1}]},
+    )
+
+    assert response.status_code == 201
+    assert response.headers["X-Trace-ID"] == "req-create-no-publish"
+
+    outbox_event = db_session.query(OutboxEvent).one()
+    assert outbox_event.event_type == "order.created"
+    assert outbox_event.request_id == "req-create-no-publish"
+    assert outbox_event.published_at is None
+    assert outbox_event.publish_attempts == 0
+    assert publish_calls == []

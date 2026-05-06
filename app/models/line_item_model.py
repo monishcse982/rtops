@@ -8,8 +8,8 @@ class LineItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    product_id = Column(Integer, ForeignKey("products.id"))  # 🔄 antes era item_id
+    product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer, nullable=False)
 
     order = relationship("Order", back_populates="line_items")
-    product = relationship("Product")  # 🔄 antes era item
+    product = relationship("Product")

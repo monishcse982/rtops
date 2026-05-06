@@ -38,6 +38,8 @@ dependencies = [
     "faker>=40.15.0",
     "rich>=13.9",
     "starlette>=1.0.0",
+    "requests>=2.33.1",
+    "allure-python-commons>=2.16.0",
 ]
 
 [dependency-groups]
@@ -46,14 +48,12 @@ dev = [
     "pytest~=8.3",
     "pytest-asyncio~=0.25",
     "respx>=0.22",
-
+    "allure-pytest>=2.16.0",
     # Lint / format
     "ruff>=0.11",
     "black>=25.1",
-
     # Typing
     "mypy>=1.15",
-
     # Git hooks
     "pre-commit>=4.6"
 ]
@@ -67,6 +67,7 @@ line-length = 100
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+addopts = "--alluredir=reports/allure-results/current --clean-alluredir"
 
 [tool.mypy]
 python_version = "3.12"

@@ -1,3 +1,4 @@
+import os
 from datetime import UTC, datetime
 from decimal import Decimal
 from typing import Any
@@ -11,6 +12,13 @@ from app.request_context import ensure_request_id
 
 
 event_publisher = EventPublisher()
+
+
+def _get_bool_env(name: str, default: bool) -> bool:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    return raw_value.strip().lower() in {"1", "true", "yes", "on"}
 
 
 def _json_safe(value: Any) -> Any:
@@ -36,6 +44,12 @@ def enqueue_event(db: Session, event_type: str, payload: dict[str, Any]) -> Outb
 
 
 def publish_pending_events(db: Session, limit: int = 20) -> int:
+    if not _get_bool_env("OUTBOX_PUBLISH_ON_REQUEST", True):
+        logger.info(
+            "Skipping synchronous outbox publish because OUTBOX_PUBLISH_ON_REQUEST is disabled"
+        )
+        return 0
+
     pending_events = (
         db.query(OutboxEvent)
         .filter(OutboxEvent.published_at.is_(None))
