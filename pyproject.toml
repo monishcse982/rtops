@@ -40,6 +40,7 @@ dependencies = [
     "starlette>=1.0.0",
     "requests>=2.33.1",
     "allure-python-commons>=2.16.0",
+    "locust>=2.44.0",
 ]
 
 [dependency-groups]
