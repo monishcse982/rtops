@@ -21,8 +21,7 @@ venv/
 .coverage
 htmlcov/
 pytest_cache/
-reports/allure-results/
-reports/allure-report/
+reports/
 allure-report
 .*.env
 # Build artifacts

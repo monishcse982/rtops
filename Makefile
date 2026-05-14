@@ -3,8 +3,13 @@ CLUSTER=rtops
 NS=rtops
 KUSTOMIZE_DIR=k8s/base
 K3D_CONFIG=k8s/local/k3d-cluster.yaml
+LOCUST_CONFIG=tests/perf/locust.local.conf
+LOCUST_HOST?=http://localhost:8000
+LOCUST_USERS?=10
+LOCUST_SPAWN_RATE?=2
+LOCUST_RUN_TIME?=1m
 
-.PHONY: build import deploy migrate seed status logs port-forward port-forward-api port-forward-rabbitmq port-forward-postgres port-forward-cache port-forward-all stop-port-forward cluster-up wait-cluster wait-infra wait-api down cluster-down destroy reset reset-all all
+.PHONY: build import deploy migrate seed status logs port-forward port-forward-api port-forward-rabbitmq port-forward-postgres port-forward-cache port-forward-all stop-port-forward cluster-up wait-cluster wait-infra wait-api down cluster-down destroy reset reset-all all locust locust-headless clean
 
 build:
 	docker build -t $(IMAGE) .
@@ -56,6 +61,18 @@ destroy: stop-port-forward cluster-down
 	else \
 		echo "Image $(IMAGE) does not exist. Nothing to remove."; \
 	fi
+
+clean:
+	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+	rm -rf .pytest_cache .ruff_cache
+	rm -rf allure-report
+
+locust:
+	uv run locust --config $(LOCUST_CONFIG) --host $(LOCUST_HOST)
+
+locust-headless:
+	uv run locust --config $(LOCUST_CONFIG) --host $(LOCUST_HOST) --headless -u $(LOCUST_USERS) -r $(LOCUST_SPAWN_RATE) -t $(LOCUST_RUN_TIME)
 
 deploy:
 	kubectl apply -k $(KUSTOMIZE_DIR)

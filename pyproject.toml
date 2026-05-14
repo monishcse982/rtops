@@ -49,6 +49,7 @@ dev = [
     "pytest-asyncio~=0.25",
     "respx>=0.22",
     "allure-pytest>=2.16.0",
+    "locust>=2.43.4",
     # Lint / format
     "ruff>=0.11",
     "black>=25.1",
