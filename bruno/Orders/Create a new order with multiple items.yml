@@ -10,16 +10,12 @@ http:
   url: "{{baseUrl}}/api/orders/"
   body:
     type: json
-    data: |-
+    data: |
       {
         "items": [
           {
-            "item_id": 1,
-            "quantity": 2
-          },
-          {
-            "item_id": 3,
-            "quantity": 1
+            "product_id": 7,
+            "quantity": 3
           }
         ]
       }

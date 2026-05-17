@@ -40,6 +40,7 @@ dependencies = [
     "starlette>=1.0.0",
     "requests>=2.33.1",
     "allure-python-commons>=2.16.0",
+    "locust>=2.44.0",
 ]
 
 [dependency-groups]
@@ -49,6 +50,7 @@ dev = [
     "pytest-asyncio~=0.25",
     "respx>=0.22",
     "allure-pytest>=2.16.0",
+    "locust>=2.43.4",
     # Lint / format
     "ruff>=0.11",
     "black>=25.1",
