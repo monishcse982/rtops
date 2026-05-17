@@ -1,143 +1,79 @@
 IMAGE=rtops-api:dev
 CLUSTER=rtops
 NS=rtops
-KUSTOMIZE_DIR=k8s/base
 K3D_CONFIG=k8s/local/k3d-cluster.yaml
+KUSTOMIZE_DIR=k8s/base
 LOCUST_CONFIG=tests/perf/locust.local.conf
 LOCUST_HOST?=http://localhost:8000
 LOCUST_USERS?=10
 LOCUST_SPAWN_RATE?=2
 LOCUST_RUN_TIME?=1m
+TMP_DIR=.tmp
+API_PORT_FORWARD_PID=$(TMP_DIR)/api-port-forward.pid
+API_PORT_FORWARD_LOG=$(TMP_DIR)/api-port-forward.log
 
-.PHONY: build import deploy migrate seed status logs port-forward port-forward-api port-forward-rabbitmq port-forward-postgres port-forward-cache port-forward-all stop-port-forward cluster-up wait-cluster wait-infra wait-api down cluster-down destroy reset reset-all all locust locust-headless clean
+.DEFAULT_GOAL := help
 
-build:
-	docker build -t $(IMAGE) .
+.PHONY: help setup teardown locust locust-headless
 
-import:
-	k3d image import $(IMAGE) -c $(CLUSTER)
+help:
+	@echo "make setup            Create the k3d cluster, deploy the stack, run migrations and seed data, and port-forward the API"
+	@echo "make teardown         Stop the API port-forward and delete the local k3d cluster"
+	@echo "make locust           Start the Locust UI against the local API"
+	@echo "make locust-headless  Run Locust headless with LOCUST_USERS, LOCUST_SPAWN_RATE, and LOCUST_RUN_TIME"
 
-cluster-up:
+setup:
 	@if k3d cluster list | awk 'NR > 1 {print $$1}' | grep -qx "$(CLUSTER)"; then \
 		echo "Cluster $(CLUSTER) already exists"; \
 	else \
 		k3d cluster create --config $(K3D_CONFIG); \
 	fi
-
-wait-infra:
+	kubectl wait --for=condition=Ready nodes --all --timeout=180s
+	docker build -t $(IMAGE) .
+	k3d image import $(IMAGE) -c $(CLUSTER)
+	kubectl apply -k $(KUSTOMIZE_DIR)
 	kubectl rollout status statefulset/postgres -n $(NS) --timeout=180s
 	kubectl rollout status statefulset/rabbitmq -n $(NS) --timeout=180s
 	kubectl rollout status statefulset/cache -n $(NS) --timeout=180s
-
-wait-api:
+	kubectl delete job migration -n $(NS) --ignore-not-found
+	kubectl apply -f $(KUSTOMIZE_DIR)/migration.yml
+	kubectl wait --for=condition=complete job/migration -n $(NS) --timeout=180s
 	kubectl rollout status deployment/api -n $(NS) --timeout=180s
-
-wait-cluster:
-	kubectl wait --for=condition=Ready nodes --all --timeout=180s
-
-down:
-	@if kubectl get namespace $(NS) >/dev/null 2>&1; then \
-		kubectl delete -k $(KUSTOMIZE_DIR) --ignore-not-found; \
+	kubectl delete job seed -n $(NS) --ignore-not-found
+	kubectl apply -f $(KUSTOMIZE_DIR)/seed-job.yml
+	kubectl wait --for=condition=complete job/seed -n $(NS) --timeout=180s
+	mkdir -p $(TMP_DIR)
+	@if [ -f $(API_PORT_FORWARD_PID) ] && kill -0 "$$(cat $(API_PORT_FORWARD_PID))" >/dev/null 2>&1; then \
+		echo "API port-forward already running on $(LOCUST_HOST)"; \
 	else \
-		echo "Namespace $(NS) does not exist. Nothing to delete."; \
+		rm -f $(API_PORT_FORWARD_PID); \
+		(kubectl port-forward svc/api 8000:8000 -n $(NS) > $(API_PORT_FORWARD_LOG) 2>&1 & echo $$! > $(API_PORT_FORWARD_PID)); \
+		echo "API port-forward started on $(LOCUST_HOST)"; \
 	fi
 
-cluster-down:
+teardown:
+	@echo "Stopping API port-forward..."
+	@if [ -f $(API_PORT_FORWARD_PID) ]; then \
+		pid=$$(cat $(API_PORT_FORWARD_PID)); \
+		if kill -0 $$pid >/dev/null 2>&1; then \
+			kill $$pid; \
+			echo "Stopped API port-forward $$pid"; \
+		fi; \
+		rm -f $(API_PORT_FORWARD_PID); \
+	else \
+		echo "No API port-forward PID file found."; \
+	fi
+	@rm -f $(API_PORT_FORWARD_LOG)
+	@echo "Deleting k3d cluster $(CLUSTER)..."
 	@if k3d cluster list | awk 'NR > 1 {print $$1}' | grep -qx "$(CLUSTER)"; then \
 		k3d cluster delete $(CLUSTER); \
+		echo "Deleted cluster $(CLUSTER)"; \
 	else \
-		echo "Cluster $(CLUSTER) does not exist. Nothing to delete."; \
+		echo "Cluster $(CLUSTER) does not exist."; \
 	fi
-
-destroy: stop-port-forward cluster-down
-	@if [ -d .tmp ]; then \
-		rm -rf .tmp; \
-		echo "Removed .tmp/"; \
-	else \
-		echo ".tmp does not exist. Nothing to remove."; \
-	fi
-	@if docker image inspect $(IMAGE) >/dev/null 2>&1; then \
-		docker image rm $(IMAGE); \
-	else \
-		echo "Image $(IMAGE) does not exist. Nothing to remove."; \
-	fi
-
-clean:
-	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
-	find . -type f -name "*.pyc" -delete
-	rm -rf .pytest_cache .ruff_cache
-	rm -rf allure-report
 
 locust:
 	uv run locust --config $(LOCUST_CONFIG) --host $(LOCUST_HOST)
 
 locust-headless:
 	uv run locust --config $(LOCUST_CONFIG) --host $(LOCUST_HOST) --headless -u $(LOCUST_USERS) -r $(LOCUST_SPAWN_RATE) -t $(LOCUST_RUN_TIME)
-
-deploy:
-	kubectl apply -k $(KUSTOMIZE_DIR)
-
-migrate:
-	kubectl delete job migration -n $(NS) --ignore-not-found
-	kubectl apply -f k8s/base/migration.yml
-	kubectl wait --for=condition=complete job/migration -n $(NS) --timeout=180s
-	kubectl logs job/migration -n $(NS)
-
-seed:
-	kubectl delete job seed -n $(NS) --ignore-not-found
-	kubectl apply -f $(KUSTOMIZE_DIR)/seed-job.yml
-	kubectl wait --for=condition=complete job/seed -n $(NS) --timeout=180s
-	kubectl logs job/seed -n $(NS)
-
-status:
-	kubectl get pods,svc,pvc,jobs -n $(NS)
-
-logs:
-	kubectl logs deployment/api -n $(NS)
-
-port-forward:
-	@echo "API is not port-forwarded by default. Run it locally with: uv run uvicorn app.main:app --reload"
-
-port-forward-api:
-	kubectl port-forward svc/api 8000:8000 -n $(NS)
-
-port-forward-rabbitmq:
-	kubectl port-forward svc/rabbitmq 5672:5672 15672:15672 -n $(NS)
-
-port-forward-postgres:
-	kubectl port-forward svc/postgres 5432:5432 -n $(NS)
-
-port-forward-cache:
-	kubectl port-forward svc/cache 6379:6379 -n $(NS)
-
-port-forward-all:
-	mkdir -p .tmp
-	(kubectl port-forward svc/rabbitmq 5672:5672 15672:15672 -n $(NS) > .tmp/rabbitmq-port-forward.log 2>&1 & echo $$! > .tmp/rabbitmq-port-forward.pid)
-	(kubectl port-forward svc/postgres 5432:5432 -n $(NS) > .tmp/postgres-port-forward.log 2>&1 & echo $$! > .tmp/postgres-port-forward.pid)
-	(kubectl port-forward svc/cache 6379:6379 -n $(NS) > .tmp/cache-port-forward.log 2>&1 & echo $$! > .tmp/cache-port-forward.pid)
-	@echo "Port forwards started:"
-	@echo "  RabbitMQ UI:   http://localhost:15672"
-	@echo "  RabbitMQ AMQP: localhost:5672"
-	@echo "  Postgres:   localhost:5432"
-	@echo "  Valkey:     localhost:6379"
-	@echo "Logs and PIDs are in .tmp/"
-
-stop-port-forward:
-	@if ls .tmp/*-port-forward.pid >/dev/null 2>&1; then \
-		for pidfile in .tmp/*-port-forward.pid; do \
-			pid=$$(cat $$pidfile); \
-			if kill -0 $$pid >/dev/null 2>&1; then \
-				kill $$pid; \
-				echo "Stopped port-forward process $$pid"; \
-			fi; \
-			rm -f $$pidfile; \
-		done; \
-	else \
-		echo "No port-forward PID files found."; \
-	fi
-
-all: stop-port-forward cluster-up wait-cluster build import deploy wait-infra migrate wait-api seed status port-forward-all
-
-reset: down all
-
-reset-all: stop-port-forward cluster-down cluster-up wait-cluster build import deploy wait-infra migrate wait-api seed status port-forward-all

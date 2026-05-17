@@ -4,11 +4,11 @@ from decimal import Decimal
 from locust import task
 
 from tests.perf.base_user import BaseApiUser
-from tests.perf.commons import DEFAULT_WAIT
+from tests.perf.commons import SHORT_WAIT
 
 
 class ProductBrowsingUser(BaseApiUser):
-    wait_time = DEFAULT_WAIT
+    wait_time = SHORT_WAIT
 
     @staticmethod
     def _price(value) -> Decimal:

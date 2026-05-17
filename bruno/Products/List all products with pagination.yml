@@ -7,24 +7,28 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/products/?page=1&page_size=20&sort_by=id&sort_order=asc"
+  url: "{{baseUrl}}/api/products/"
   params:
     - name: page
       value: "1"
       type: query
       description: Page number, starting from 1
+      disabled: true
     - name: page_size
       value: "20"
       type: query
       description: Number of items per page (1-100)
+      disabled: true
     - name: sort_by
       value: id
       type: query
       description: Field to sort by (id, name, price, stock)
+      disabled: true
     - name: sort_order
       value: asc
       type: query
       description: Sort order (asc, desc)
+      disabled: true
     - name: min_price
       value: ""
       type: query
@@ -46,6 +50,14 @@ http:
       description: Search in name and description
       disabled: true
   auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const items = res.getBody().items;
+        const productId = items[Math.floor(Math.random() * items.length)].id;
+        bru.setVar("productId",productId)
 
 settings:
   encodeUrl: true

@@ -44,3 +44,6 @@ k8s/**/secret*.env
 *.env.local
 *.env.dev
 .github
+
+# Local files
+.local/
