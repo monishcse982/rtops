@@ -10,6 +10,18 @@ A scalable, event-driven microservice architecture for processing orders in real
 - **Comprehensive Monitoring** for system visibility
 - **Kubernetes Support** for cloud-native deployments
 
+## Project Scope
+
+This repository is being developed as a testing-focused portfolio project for SDET-style work.
+
+The backend application is used as a realistic system under test. The main effort in this repository is focused on:
+
+- functional test design and automation
+- performance testing with Locust
+- test reporting and execution workflow
+- local and deployed validation setup
+- testing and infrastructure ADRs
+
 ## 🏗️ Tech Stack
 
 - **FastAPI** - High-performance Python web framework
@@ -103,6 +115,17 @@ make pgadmin-open
 - [RabbitMQ debuggin](docs/rabbitmq_consumer_debuggin.md)
 - [Kubernetes Deployment Guide](docs/deployment_guide.md)
 
+## Attribution
+
+The backend application in this repository was adapted from the open-source backend project [sebadp/FastAPI-RabbitMQ-Event-driven-design](https://github.com/sebadp/FastAPI-RabbitMQ-Event-driven-design) by Sebastián Dávila.
+
+I updated the backend to run on current dependencies and built the testing, performance, reporting, and test-infrastructure work around it.
+
+Original backend credit:
+
+- Sebastián Dávila
+- Source backend project: [FastAPI-RabbitMQ-Event-driven-design](https://github.com/sebadp/FastAPI-RabbitMQ-Event-driven-design)
+
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to open issues or submit a pull request with your changes.
@@ -112,10 +135,8 @@ Contributions are welcome! Feel free to open issues or submit a pull request wit
 
 This project is licensed under the **MIT License**.
 
----
-
-## 👨‍💻 Author
+## Backend Project Author
 
 **Sebastián Dávila**
 
-Feel free to contribute, open issues, or suggest improvements! 🚀
+Backend project: [FastAPI-RabbitMQ-Event-driven-design](https://github.com/sebadp/FastAPI-RabbitMQ-Event-driven-design)
