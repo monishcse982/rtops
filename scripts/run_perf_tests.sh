@@ -28,4 +28,8 @@ else
 fi
 
 echo "Publishing performance report artifacts..."
-python3 scripts/publish_reports.py performance
+if [ "${SKIP_REPORT_PUBLISH:-0}" = "1" ]; then
+  echo "Skipping external report publishing; GitHub Actions artifacts will be used."
+else
+  python3 scripts/publish_reports.py performance
+fi

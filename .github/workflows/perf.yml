@@ -1,0 +1,78 @@
+name: Performance Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        run: uv sync --frozen --all-groups
+
+      - name: Start CI stack
+        run: docker compose -f docker-compose.ci.yml up -d --build
+
+      - name: Run migrations
+        run: docker compose -f docker-compose.ci.yml run --rm api alembic upgrade head
+
+      - name: Seed data
+        run: docker compose -f docker-compose.ci.yml run --rm seed
+
+      - name: Wait for API health
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become healthy in time"
+          exit 1
+
+      - name: Run performance tests
+        env:
+          LOCUST_HOST: http://localhost:8000
+          LOCUST_USERS: 10
+          LOCUST_SPAWN_RATE: 2
+          LOCUST_RUN_TIME: 1m
+          SKIP_REPORT_PUBLISH: "1"
+        run: ./scripts/run_perf_tests.sh
+
+      - name: Upload Locust artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: locust-artifacts
+          path: reports/locust
+
+      - name: Print artifact links
+        if: always()
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "Locust artifacts: ${RUN_URL}"
+          {
+            echo "## Performance Artifacts"
+            echo ""
+            echo "- Locust artifacts: [View run artifacts](${RUN_URL})"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dump compose logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.ci.yml logs
+
+      - name: Tear down stack
+        if: always()
+        run: docker compose -f docker-compose.ci.yml down -v
