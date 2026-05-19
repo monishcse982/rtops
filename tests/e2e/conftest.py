@@ -9,13 +9,16 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from TestConfig import TestConfig
-from app.models.outbox_event_model import OutboxEvent
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+E2E_ROOT = Path(__file__).resolve().parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+if str(E2E_ROOT) not in sys.path:
+    sys.path.insert(0, str(E2E_ROOT))
+
+from TestConfig import TestConfig  # noqa: E402
+from app.models.outbox_event_model import OutboxEvent  # noqa: E402
 
 REPORTS_ROOT = PROJECT_ROOT / "reports"
 ALLURE_RESULTS_ROOT = REPORTS_ROOT / "allure-results"
