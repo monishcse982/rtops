@@ -113,6 +113,7 @@ Corrections to preserve:
 
 ## Before Push Or PR
 
+- Only use `feat/` as default, `doc/` for documentation publishing, `fix/` for bug fixes as branch prefixes.
 - Run the narrowest relevant tests first, then broader checks if the change affects shared behavior.
 - For Locust changes, at minimum verify Python compilation and Locust file discovery.
 - Review `git diff --stat` and `git diff` before staging.
