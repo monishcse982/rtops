@@ -51,12 +51,20 @@ jobs:
           echo "API did not become healthy in time"
           exit 1
 
+      - name: Seed EC2 test data
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ env.EC2_HOST }}" \
+            'cd /opt/rtops && docker compose run --rm seed'
+
       - name: Run E2E tests
+        timeout-minutes: 10
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/orders_db
           API_URL: http://localhost:8000
           REDIS_URL: redis://localhost:6379/0
-        run: uv run pytest tests/e2e
+          E2E_HTTP_TIMEOUT_SECONDS: 10
+          GENERATE_ALLURE_HTML: "0"
+        run: timeout 8m uv run pytest tests/e2e -vv --tb=short
 
       - name: Upload Allure artifacts
         if: always()

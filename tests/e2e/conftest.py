@@ -1,6 +1,7 @@
 import sys
 from collections.abc import Generator
 from datetime import datetime
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -58,6 +59,9 @@ def pytest_sessionfinish(session, exitstatus):
         shutil.rmtree(final_results_dir)
     shutil.move(str(current_results_dir), str(final_results_dir))
 
+    if os.getenv("GENERATE_ALLURE_HTML", "0") != "1":
+        return
+
     if final_report_dir.exists():
         shutil.rmtree(final_report_dir)
 
@@ -103,7 +107,11 @@ def test_config() -> TestConfig:
 
 @pytest.fixture(scope="session")
 def db_engine(test_config: TestConfig):
-    engine = create_engine(test_config.database_url)
+    engine = create_engine(
+        test_config.database_url,
+        connect_args={"connect_timeout": 10},
+        pool_pre_ping=True,
+    )
     yield engine
     engine.dispose()
 

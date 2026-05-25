@@ -20,6 +20,7 @@ jobs:
             docker compose pull
             docker compose up -d postgres rabbitmq cache api consumer_order_created consumer_order_paid consumer_order_ready_to_ship consumer_order_shipped consumer_order_delivered
             docker compose exec -T api alembic upgrade head
+            docker compose run --rm seed
             for attempt in $(seq 1 30); do
               if curl --fail --silent --show-error --max-time 5 http://localhost:8000/health; then
                 exit 0

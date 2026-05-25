@@ -1,4 +1,5 @@
 import json
+import os
 import shlex
 from collections.abc import Iterable
 from datetime import date, datetime
@@ -10,6 +11,8 @@ import allure
 import requests
 from sqlalchemy.inspection import inspect as sqlalchemy_inspect
 from sqlalchemy.orm import Query
+
+DEFAULT_HTTP_TIMEOUT_SECONDS = float(os.getenv("E2E_HTTP_TIMEOUT_SECONDS", "10"))
 
 
 def _serialize(value: Any) -> Any:
@@ -56,9 +59,11 @@ def attach_text(name: str, content: str) -> None:
 
 
 def api_request(method: str, url: str, **kwargs) -> requests.Response:
+    kwargs.setdefault("timeout", DEFAULT_HTTP_TIMEOUT_SECONDS)
     request_payload = {
         "method": method.upper(),
         "url": url,
+        "timeout": kwargs.get("timeout"),
         "params": kwargs.get("params"),
         "headers": kwargs.get("headers"),
         "json": kwargs.get("json"),

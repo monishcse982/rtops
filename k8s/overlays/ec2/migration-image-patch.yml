@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration
+  namespace: rtops
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: migration
+          image: ghcr.io/monishcse982/rtops:main
+          imagePullPolicy: Always

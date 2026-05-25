@@ -17,6 +17,8 @@ resources:
   - cache-statefulset.yml
   - api-service.yml
   - api-deployment.yml
+  - migration.yml
+  - seed-job.yml
 
 secretGenerator:
   - name: rtops-secret
