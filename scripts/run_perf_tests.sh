@@ -27,9 +27,4 @@ else
     -t "${LOCUST_RUN_TIME}"
 fi
 
-echo "Publishing performance report artifacts..."
-if [ "${SKIP_REPORT_PUBLISH:-0}" = "1" ]; then
-  echo "Skipping external report publishing; GitHub Actions artifacts will be used."
-else
-  python3 scripts/publish_reports.py performance
-fi
+echo "Performance report artifacts are available under reports/locust."

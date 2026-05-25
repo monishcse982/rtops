@@ -1,0 +1,50 @@
+name: Deploy K8s To EC2
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-k8s:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Kubernetes stack on EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            cd /opt/rtops
+
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+
+            kubectl get namespace rtops >/dev/null
+
+            kubectl get secret ghcr-pull-secret -n rtops >/dev/null
+
+            kubectl delete job migration seed -n rtops --ignore-not-found
+
+            kubectl apply -k k8s/overlays/ec2
+
+            kubectl rollout status statefulset/postgres -n rtops --timeout=180s
+            kubectl rollout status statefulset/rabbitmq -n rtops --timeout=180s
+            kubectl rollout status statefulset/cache -n rtops --timeout=180s
+
+            kubectl wait --for=condition=complete job/migration -n rtops --timeout=180s
+            kubectl rollout status deployment/api -n rtops --timeout=180s
+            kubectl wait --for=condition=complete job/seed -n rtops --timeout=180s
+
+            kubectl run rtops-api-health-check \
+              --namespace rtops \
+              --rm \
+              --restart=Never \
+              --image=curlimages/curl:8.8.0 \
+              --command -- curl -fsS http://api:8000/health
