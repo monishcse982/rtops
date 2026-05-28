@@ -1,0 +1,52 @@
+Count,Message,Traceback,Nodes
+3,"GET /api/products/?page={page}&page_size={page_size} did not receive an HTTP response. underlying error: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))","  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 363, in run
+    self.execute_next_task()
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 396, in execute_next_task
+    self.execute_task(self._task_queue.popleft())
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 513, in execute_task
+    task(self.user)
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 68, in browse_filtered_products_then_checkout
+    products = self._load_products(
+               ^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 15, in _load_products
+    get_products_payload = self.get_json_ok(path, name=name)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 40, in get_json_ok
+    self._raise_for_status(response, name, expected_status)
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 14, in _raise_for_status
+    raise AssertionError(
+",local
+4,"GET /api/products/ did not receive an HTTP response. underlying error: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))","  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 363, in run
+    self.execute_next_task()
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 396, in execute_next_task
+    self.execute_task(self._task_queue.popleft())
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 513, in execute_task
+    task(self.user)
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 34, in browse_product_then_checkout
+    products = self._load_products(
+               ^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 15, in _load_products
+    get_products_payload = self.get_json_ok(path, name=name)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 40, in get_json_ok
+    self._raise_for_status(response, name, expected_status)
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 14, in _raise_for_status
+    raise AssertionError(
+",local
+2,"GET /api/products/?sort_by=price&sort_order=asc did not receive an HTTP response. underlying error: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))","  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 363, in run
+    self.execute_next_task()
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 396, in execute_next_task
+    self.execute_task(self._task_queue.popleft())
+  File ""/home/runner/work/rtops/rtops/.venv/lib/python3.12/site-packages/locust/user/task.py"", line 513, in execute_task
+    task(self.user)
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 94, in multi_product_checkout_journey
+    products = self._load_products(
+               ^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/users/order_journeys.py"", line 15, in _load_products
+    get_products_payload = self.get_json_ok(path, name=name)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 40, in get_json_ok
+    self._raise_for_status(response, name, expected_status)
+  File ""/home/runner/work/rtops/rtops/tests/perf/base_user.py"", line 14, in _raise_for_status
+    raise AssertionError(
+",local
