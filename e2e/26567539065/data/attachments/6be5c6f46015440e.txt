@@ -1,0 +1,1 @@
+curl -X GET 'http://localhost:8000/api/products/?search=sort-fallback-5e855f21&sort_by=not_a_real_field&page_size=100'

@@ -1,0 +1,27 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "gt": 0
+        },
+        "input": "0",
+        "loc": [
+          "path",
+          "order_id"
+        ],
+        "msg": "Input should be greater than 0",
+        "type": "greater_than"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "128",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 09:52:07 GMT",
+    "server": "uvicorn",
+    "x-request-id": "44f3be78-d8c6-41f7-b659-a7e0a9130398",
+    "x-trace-id": "44f3be78-d8c6-41f7-b659-a7e0a9130398"
+  },
+  "status_code": 422
+}

@@ -1,0 +1,1 @@
+curl -X GET 'http://localhost:8000/api/products/?search=Tra&min_price=0&max_price=10000'

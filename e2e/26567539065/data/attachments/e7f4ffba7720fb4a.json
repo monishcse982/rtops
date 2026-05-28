@@ -1,0 +1,11 @@
+{
+  "data": null,
+  "headers": {
+    "X-Request-ID": "req-health-001"
+  },
+  "json": null,
+  "method": "GET",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/health"
+}

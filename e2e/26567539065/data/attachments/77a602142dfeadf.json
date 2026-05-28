@@ -1,0 +1,26 @@
+{
+  "body": {
+    "created_at": "2026-05-28T09:51:43.229599",
+    "items": [
+      {
+        "name": "Travel Flask",
+        "product_id": 2,
+        "quantity": 2,
+        "subtotal": "59.80",
+        "unit_price": "29.90"
+      }
+    ],
+    "order_id": 2605,
+    "status": "created",
+    "total_price": "59.80"
+  },
+  "headers": {
+    "content-length": "202",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 09:51:43 GMT",
+    "server": "uvicorn",
+    "x-request-id": "22944c78-b0b4-47c2-8326-67064320bded",
+    "x-trace-id": "22944c78-b0b4-47c2-8326-67064320bded"
+  },
+  "status_code": 200
+}

@@ -1,0 +1,12 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "GET",
+  "params": {
+    "max_price": 5,
+    "min_price": 10
+  },
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

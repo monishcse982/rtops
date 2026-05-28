@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-05-28T09:51:22.273941",
+  "event_type": "order.created",
+  "id": 2501,
+  "last_error": null,
+  "payload": {
+    "event": "order.created",
+    "order_id": 2536,
+    "request_id": "17a366a3-c6c5-4086-b9a7-0ea4f61f928e",
+    "timestamp": "2026-05-28T09:51:22.273556+00:00",
+    "total_price": 189.48
+  },
+  "publish_attempts": 1,
+  "published_at": "2026-05-28T09:51:22.279764",
+  "request_id": "17a366a3-c6c5-4086-b9a7-0ea4f61f928e"
+}

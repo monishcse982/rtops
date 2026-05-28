@@ -1,0 +1,5 @@
+{
+  "actual": "delivered",
+  "description": "persisted order status is delivered",
+  "expected": "delivered"
+}

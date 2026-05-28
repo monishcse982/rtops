@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Invalid path",
+    "name": "invalid-update-856e19c3",
+    "price": "10.00",
+    "stock": 1
+  },
+  "method": "PUT",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/0"
+}

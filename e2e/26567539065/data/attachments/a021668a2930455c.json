@@ -1,0 +1,5 @@
+{
+  "actual": 1,
+  "description": "invalid transition does not write outbox rows",
+  "expected": 0
+}

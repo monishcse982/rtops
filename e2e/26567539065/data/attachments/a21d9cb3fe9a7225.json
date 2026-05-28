@@ -1,0 +1,29 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "actual_length": 0,
+          "field_type": "List",
+          "min_length": 1
+        },
+        "input": [],
+        "loc": [
+          "body",
+          "items"
+        ],
+        "msg": "List should have at least 1 item after validation, not 0",
+        "type": "too_short"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "193",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 09:51:30 GMT",
+    "server": "uvicorn",
+    "x-request-id": "26b12fd4-c0c3-4d56-92ae-7f4df45ae9e9",
+    "x-trace-id": "26b12fd4-c0c3-4d56-92ae-7f4df45ae9e9"
+  },
+  "status_code": 422
+}

@@ -1,0 +1,5 @@
+{
+  "actual": 7,
+  "description": "no outbox row is written",
+  "expected": 0
+}

@@ -1,0 +1,11 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "GET",
+  "params": {
+    "search": "a"
+  },
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

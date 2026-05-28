@@ -1,0 +1,5 @@
+{
+  "actual": 1,
+  "description": "invalid transition does not append outbox events",
+  "expected": 1
+}

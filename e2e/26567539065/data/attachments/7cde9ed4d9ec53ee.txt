@@ -1,0 +1,3 @@
+SELECT orders.id, orders.status, orders.created_at, orders.tracking_number, orders.carrier 
+FROM orders 
+WHERE orders.id = 2714

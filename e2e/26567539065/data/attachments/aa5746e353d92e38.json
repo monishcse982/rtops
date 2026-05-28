@@ -1,0 +1,9 @@
+{
+  "actual": {
+    "status": "ok"
+  },
+  "description": "health response body is ok",
+  "expected": {
+    "status": "ok"
+  }
+}

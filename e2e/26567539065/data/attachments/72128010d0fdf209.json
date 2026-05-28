@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Created by E2E test",
+    "name": "e2e-product-2a2cd9cf",
+    "price": "19.99",
+    "stock": 7
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

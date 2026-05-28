@@ -1,0 +1,5 @@
+{
+  "actual": "created",
+  "description": "persisted order status is created",
+  "expected": "created"
+}

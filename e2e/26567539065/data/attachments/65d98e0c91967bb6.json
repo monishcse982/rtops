@@ -1,0 +1,5 @@
+{
+  "actual": "453.600",
+  "description": "create order total price matches taxed pricing",
+  "expected": "453.600"
+}

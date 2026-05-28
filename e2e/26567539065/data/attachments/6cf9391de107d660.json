@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Updated by E2E test",
+    "name": "updated-product-f4afffbd",
+    "price": "49.99",
+    "stock": 11
+  },
+  "method": "PUT",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/2"
+}

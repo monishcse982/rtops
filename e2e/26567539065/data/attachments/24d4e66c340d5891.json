@@ -1,0 +1,5 @@
+{
+  "actual": "1065e1c0-2452-4961-b41a-a14873c6eebe",
+  "description": "outbox request id matches generated request id",
+  "expected": "1065e1c0-2452-4961-b41a-a14873c6eebe"
+}
