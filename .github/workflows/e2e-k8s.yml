@@ -14,9 +14,6 @@ concurrency:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/e2e/${{ github.run_id }}/
 
     steps:
       - name: Checkout repository
@@ -47,6 +44,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
           set -euo pipefail
+          export KUBECONFIG="$HOME/.kube/config"
 
           pkill -f "kubectl port-forward.*svc/api" || true
           pkill -f "kubectl port-forward.*svc/postgres" || true
@@ -85,22 +83,25 @@ jobs:
         run: |
           ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
           set -euo pipefail
+          export KUBECONFIG="$HOME/.kube/config"
 
-          cd /opt/rtops
-          kubectl delete job seed -n rtops --ignore-not-found=true
-          kubectl apply -k k8s/base
-          kubectl wait --for=condition=complete job/seed -n rtops --timeout=120s
+          SEED_JOB="e2e-seed-${{ github.run_id }}"
+          kubectl delete job "${SEED_JOB}" -n rtops --ignore-not-found=true
+          kubectl create job "${SEED_JOB}" -n rtops --from=job/seed
+          kubectl wait --for=condition=complete "job/${SEED_JOB}" -n rtops --timeout=120s
           EOF
 
       - name: Run E2E tests
         timeout-minutes: 10
         env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/orders_db
+          K8S_DATABASE_URL: ${{ secrets.K8S_DATABASE_URL }}
           API_URL: http://localhost:8000
           REDIS_URL: redis://localhost:6379/0
           E2E_HTTP_TIMEOUT_SECONDS: 10
           GENERATE_ALLURE_HTML: "0"
         run: |
+          : "${K8S_DATABASE_URL:?K8S_DATABASE_URL secret is required}"
+          export DATABASE_URL="${K8S_DATABASE_URL/@postgres:/@localhost:}"
           rm -rf reports/allure-results reports/allure-report
           timeout 8m uv run pytest tests/e2e \
             -vv \
@@ -213,6 +214,8 @@ jobs:
         if: failure()
         run: |
           ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          export KUBECONFIG="$HOME/.kube/config"
+
           kubectl get pods -n rtops
           kubectl get jobs -n rtops
           kubectl logs deploy/api -n rtops --tail=100 || true
