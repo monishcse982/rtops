@@ -65,7 +65,8 @@ jobs:
 
             kubectl run rtops-api-health-check \
               --namespace rtops \
-              --rm \
               --restart=Never \
               --image=curlimages/curl:8.8.0 \
+              --attach \
+              --rm \
               --command -- curl -fsS http://api:8000/health
