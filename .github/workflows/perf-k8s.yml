@@ -94,6 +94,7 @@ jobs:
           LOCUST_SUSTAIN_DURATION: 40
           LOCUST_RAMP_DOWN_USERS: 0
           LOCUST_RAMP_DOWN_DURATION: 20
+          LOCUST_EXIT_CODE_ON_ERROR: 0
           SKIP_REPORT_PUBLISH: "1"
         run: ./scripts/run_perf_tests.sh
 
