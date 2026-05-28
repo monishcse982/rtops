@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,GET /api/products/,"CatchResponseError(""request failed before HTTP response: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"")",18,2026-05-28T09:11:45Z,2026-05-28T09:14:48Z
+GET,GET /api/products/?sort_by=price&sort_order=asc,"CatchResponseError(""request failed before HTTP response: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"")",11,2026-05-28T09:12:00Z,2026-05-28T09:14:37Z
+GET,GET /api/products/?page={page}&page_size={page_size},"CatchResponseError(""request failed before HTTP response: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"")",11,2026-05-28T09:12:10Z,2026-05-28T09:14:32Z
