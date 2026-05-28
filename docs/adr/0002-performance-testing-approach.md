@@ -13,8 +13,10 @@ The current implementation establishes:
 - a central Locust entrypoint in `tests/perf/locustfile.py`
 - shared helpers in `tests/perf/base_user.py` and `tests/perf/commons.py`
 - a product-focused performance user in `tests/perf/users/product_browsing.py`
+- order-focused performance users in `tests/perf/users/orders_actions.py` and `tests/perf/users/order_journeys.py`
 - a custom load shape in `tests/perf/load_profiles/ramp_up_sustain_ramp_down.py`
 - local report configuration through `tests/perf/locust.local.conf`
+- GitHub Actions execution against the EC2 Kubernetes environment through `perf-k8s.yml`
 
 We needed a performance testing approach that is:
 
@@ -133,6 +135,10 @@ Performance runs should generate timestamped local reports so results can be ins
 
 For normal local usage, we prefer routing runs through the central Locust config and entrypoint rather than running individual user files directly.
 
+Automated EC2 Kubernetes performance runs publish Locust HTML artifacts to GitHub Pages. The latest report pointer and run-specific report links are treated as portfolio-facing evidence for baseline behavior.
+
+For the current baseline workflow, Locust request failures do not fail the GitHub Actions job if the report is generated. This is intentional for now: the report should preserve visible evidence about system limits, bottlenecks, and failure rates instead of hiding them behind a green-only threshold.
+
 ## Consequences
 
 ### Positive
@@ -153,12 +159,12 @@ For normal local usage, we prefer routing runs through the central Locust config
 At the time of this ADR:
 
 - product browsing coverage exists
+- order action and order journey coverage exists
 - one custom ramp-up, sustain, ramp-down shape exists
-- the preferred next additions are order flows and more end-to-end journey users
+- EC2 Kubernetes performance workflow publishes Locust reports to GitHub Pages
 
 ## Follow-Up
 
-- Add order checkout performance scenarios.
-- Add order lifecycle journey scenarios where state transitions are safe to run repeatedly.
 - Add a mixed traffic run combining browsing and order behavior.
 - Document standard smoke, baseline, and stretch runs.
+- Define future pass/fail thresholds after enough baseline data exists.

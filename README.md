@@ -157,7 +157,7 @@ The EC2 Kubernetes performance workflow uses a small explicit smoke shape and pu
 
 ## Documentation
 
-- [Project Overview](docs/project_overview.md)
+- [Project Overview](https://github.com/monishcse982/rtops/wiki)
 - [ADR 0001: Functional Testing Approach](docs/adr/0001-functional-testing-approach.md)
 - [ADR 0002: Performance Testing Approach](docs/adr/0002-performance-testing-approach.md)
 - [ADR 0003: Test Data and Environment Strategy](docs/adr/0003-test-data-and-environment-strategy.md)

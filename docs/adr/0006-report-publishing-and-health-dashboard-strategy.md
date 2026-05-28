@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted, amended
 
 ## Context
 
@@ -21,11 +21,11 @@ We discussed three related needs:
 2. a way to publish generated reports to S3-compatible storage
 3. a basic health dashboard for runtime visibility
 
-## Decision
+## Initial Decision
 
-We will treat report publishing and runtime health monitoring as related but separate concerns.
+We initially decided to treat report publishing and runtime health monitoring as related but separate concerns.
 
-Specifically:
+The initial direction was:
 
 1. Reports will be published to S3-compatible object storage.
 2. MinIO will be used for local development to emulate S3.
@@ -36,9 +36,9 @@ Specifically:
 7. GitHub Actions should be the primary orchestration layer for combining test execution, report publication, and artifact retention.
 8. The cluster should remain the system under test, not the default home for running the full functional and performance suites.
 
-## Report Storage Strategy
+## Initial Report Storage Strategy
 
-Local development will use MinIO as the S3-compatible report store.
+Local development was expected to use MinIO as the S3-compatible report store.
 
 The report storage model should support:
 
@@ -70,9 +70,9 @@ Each published run should include metadata such as:
 - branch and commit when available
 - report entrypoint
 
-## Report Publishing Flow
+## Initial Report Publishing Flow
 
-Reports should be published after each relevant test run rather than requiring a separate manual archival workflow.
+Reports were expected to be published after each relevant test run rather than requiring a separate manual archival workflow.
 
 The expected path is:
 
@@ -84,9 +84,9 @@ The expected path is:
 
 Functional report publishing is the baseline requirement. Performance reports should follow the same shape so the system remains consistent.
 
-## HTTP Access Strategy
+## Initial HTTP Access Strategy
 
-We will not rely on `python -m http.server` as the intended report-serving solution.
+We decided not to rely on `python -m http.server` as the intended report-serving solution.
 
 It is acceptable for one-off debugging, but it is not the preferred report experience because it does not provide:
 
@@ -162,6 +162,31 @@ The better home for that orchestration is GitHub Actions, where sequencing, arti
 
 This is not a reversal of the underlying reporting goals. It is a refinement of where the orchestration should live.
 
+## Amendment: GitHub Pages Before S3/MinIO
+
+After implementing the first report-publishing path, we chose GitHub Pages as the current public report surface instead of S3/MinIO.
+
+The updated near-term decision is:
+
+1. E2E Allure HTML reports are published to GitHub Pages.
+2. Locust HTML reports are published to GitHub Pages.
+3. Each run gets a run-specific URL.
+4. Each report type gets a stable `latest` URL.
+5. GitHub Actions job summaries print direct report links.
+6. S3/MinIO remains a valid future option, but it is no longer required for the current portfolio/demo flow.
+
+This keeps the report publishing path simpler and more visible while the project is still proving its quality automation story.
+
+Current report URLs:
+
+- E2E latest report: `https://monishcse982.github.io/rtops/e2e/latest/`
+- Performance latest report: `https://monishcse982.github.io/rtops/perf/latest/`
+
+Representative sample reports:
+
+- Perf Test Report: `https://monishcse982.github.io/rtops/perf/26568507164/local/20260528-101211/report.html`
+- E2E Test Report: `https://monishcse982.github.io/rtops/e2e/26568280652/`
+
 ## Script-First Design
 
 Core execution logic should live in reusable scripts or small utilities so it can be invoked from:
@@ -204,17 +229,15 @@ They are connected in workflow but should not be collapsed into one component or
 
 At the time of this ADR:
 
-- functional and performance reports already exist locally
-- timestamped performance report output is already in place
+- functional and performance reports exist locally
+- timestamped performance report output is in place
+- E2E and performance reports are published to GitHub Pages from GitHub Actions
 - local Kubernetes-based development is already part of the project workflow
-- no shared report publishing pipeline exists yet
 - no health dashboard exists yet
 
 ## Follow-Up
 
-- Add MinIO to the local stack for report storage.
-- Add shared scripts for functional test runs, performance test runs, and report publishing.
-- Add GitHub Actions workflows for functional and performance execution.
-- Add a small Python HTTP report index.
+- Keep GitHub Pages report publishing stable before adding another storage backend.
+- Revisit MinIO/S3 only if report retention, metadata, or access-control needs outgrow GitHub Pages.
 - Add a first health dashboard focused on service and infrastructure visibility.
 - If post-deploy validation is later needed, define it separately as a lightweight smoke strategy instead of reusing the full functional or performance suites.

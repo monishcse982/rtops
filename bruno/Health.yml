@@ -28,4 +28,7 @@ examples:
           value: application/json
       body:
         type: json
-        data: ""
+        data: |-
+          {
+            "status": "ok"
+          }

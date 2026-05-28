@@ -23,7 +23,7 @@ settings:
 
 examples:
   - name: 200 Response
-    description: Order status updated to delivered and order.delivered event published
+    description: Order status updated to delivered and order.delivered event queued for publication
     request:
       url: "{{baseUrl}}/api/orders/:order_id/delivered"
       method: POST
@@ -122,7 +122,7 @@ docs: |-
   ## Process
   - Validates that the order exists and is currently in 'shipped' state.
   - Updates the order status to 'delivered'.
-  - Publishes the 'order.delivered' event to notify the customer of successful delivery.
+  - Records the `order.delivered` event in the outbox and publishes pending events to notify the customer of successful delivery.
 
   ## Returns
   - An OrderStatusResponse containing a success message, the order ID, and the updated status.
