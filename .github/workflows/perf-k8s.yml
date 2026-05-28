@@ -105,6 +105,22 @@ jobs:
 
           if [ -d reports/locust ] && [ -n "$(find reports/locust -type f -print -quit)" ]; then
             cp -R reports/locust/. public/
+
+            REPORT_PATH="$(find public -type f -name report.html | sort | tail -n 1)"
+            REPORT_PATH="${REPORT_PATH#public/}"
+            cat > public/index.html <<EOF
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <meta http-equiv="refresh" content="0; url=${REPORT_PATH}">
+              <title>Performance Report</title>
+            </head>
+            <body>
+              <p>Redirecting to <a href="${REPORT_PATH}">performance report</a>.</p>
+            </body>
+          </html>
+          EOF
           else
             cat > public/index.html <<'EOF'
           <!doctype html>
