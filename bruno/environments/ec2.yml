@@ -1,0 +1,5 @@
+name: ec2
+color: "#346AB2"
+variables:
+  - name: baseUrl
+    value: http://18.60.206.93:8000

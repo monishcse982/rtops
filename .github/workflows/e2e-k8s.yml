@@ -1,0 +1,223 @@
+name: E2E Tests on EC2 Kubernetes
+
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: e2e-pages
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/e2e/${{ github.run_id }}/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline
+
+      - name: Install dependencies
+        run: uv sync --frozen --all-groups
+
+      - name: Configure EC2 SSH access
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/rtops_ec2
+          chmod 600 ~/.ssh/rtops_ec2
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Start Kubernetes service port-forwards on EC2
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          set -euo pipefail
+
+          pkill -f "kubectl port-forward.*svc/api" || true
+          pkill -f "kubectl port-forward.*svc/postgres" || true
+          pkill -f "kubectl port-forward.*svc/cache" || true
+
+          nohup kubectl port-forward svc/api 8000:8000 -n rtops > /tmp/rtops-api-port-forward.log 2>&1 &
+          nohup kubectl port-forward svc/postgres 5432:5432 -n rtops > /tmp/rtops-postgres-port-forward.log 2>&1 &
+          nohup kubectl port-forward svc/cache 6379:6379 -n rtops > /tmp/rtops-cache-port-forward.log 2>&1 &
+
+          sleep 3
+          EOF
+
+      - name: Open EC2 Kubernetes service tunnels
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 \
+            -fN \
+            -L 8000:localhost:8000 \
+            -L 5432:localhost:5432 \
+            -L 6379:localhost:6379 \
+            -o ExitOnForwardFailure=yes \
+            -o ServerAliveInterval=30 \
+            "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}"
+
+      - name: Wait for API health
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become healthy in time"
+          exit 1
+
+      - name: Run Kubernetes seed job on EC2
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          set -euo pipefail
+
+          cd /opt/rtops
+          kubectl delete job seed -n rtops --ignore-not-found=true
+          kubectl apply -k k8s/base
+          kubectl wait --for=condition=complete job/seed -n rtops --timeout=120s
+          EOF
+
+      - name: Run E2E tests
+        timeout-minutes: 10
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/orders_db
+          API_URL: http://localhost:8000
+          REDIS_URL: redis://localhost:6379/0
+          E2E_HTTP_TIMEOUT_SECONDS: 10
+          GENERATE_ALLURE_HTML: "0"
+        run: |
+          rm -rf reports/allure-results reports/allure-report
+          timeout 8m uv run pytest tests/e2e \
+            -vv \
+            --tb=short \
+            --alluredir=reports/allure-results
+
+      - name: Generate Allure HTML report
+        if: always()
+        run: |
+          if [ -d reports/allure-results ] && [ -n "$(find reports/allure-results -type f -print -quit)" ]; then
+            allure generate reports/allure-results \
+              --clean \
+              -o reports/allure-report
+          else
+            mkdir -p reports/allure-report
+            cat > reports/allure-report/index.html <<'EOF'
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>E2E Report Unavailable</title>
+            </head>
+            <body>
+              <h1>E2E Report Unavailable</h1>
+              <p>The Allure results directory was not generated for this run.</p>
+              <p>Check the GitHub Actions logs for the E2E test step.</p>
+            </body>
+          </html>
+          EOF
+          fi
+
+      - name: Prepare Allure report site
+        if: always()
+        run: |
+          mkdir -p public
+
+          if [ -d reports/allure-report ] && [ -n "$(find reports/allure-report -type f -print -quit)" ]; then
+            cp -R reports/allure-report/. public/
+          else
+            cat > public/index.html <<'EOF'
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>E2E Report Unavailable</title>
+            </head>
+            <body>
+              <h1>E2E Report Unavailable</h1>
+              <p>The Allure HTML report directory was not generated for this run.</p>
+              <p>Check the GitHub Actions logs for the E2E test and report generation steps.</p>
+            </body>
+          </html>
+          EOF
+          fi
+
+      - name: Publish Allure report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: public
+          destination_dir: e2e/${{ github.run_id }}
+          keep_files: true
+
+      - name: Publish latest E2E report pointer
+        if: always()
+        run: |
+          mkdir -p latest-e2e
+          cat > latest-e2e/index.html <<EOF
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <meta http-equiv="refresh" content="0; url=../${{ github.run_id }}/">
+              <title>Latest E2E Report</title>
+            </head>
+            <body>
+              <p>Redirecting to <a href="../${{ github.run_id }}/">latest E2E report</a>.</p>
+            </body>
+          </html>
+          EOF
+
+      - name: Publish latest E2E report redirect
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: latest-e2e
+          destination_dir: e2e/latest
+          keep_files: true
+
+      - name: Print report links
+        if: always()
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/e2e/${{ github.run_id }}/"
+          LATEST_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/e2e/latest/"
+          echo "Allure report: ${REPORT_URL}"
+          {
+            echo "## E2E Report"
+            echo ""
+            echo "- Allure HTML report: [Open report](${REPORT_URL})"
+            echo "- Latest E2E report: [Open latest](${LATEST_URL})"
+            echo "- Workflow run: [View run](${RUN_URL})"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dump Kubernetes logs on failure
+        if: failure()
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          kubectl get pods -n rtops
+          kubectl get jobs -n rtops
+          kubectl logs deploy/api -n rtops --tail=100 || true
+          kubectl logs job/seed -n rtops --tail=100 || true
+          cat /tmp/rtops-api-port-forward.log || true
+          cat /tmp/rtops-postgres-port-forward.log || true
+          cat /tmp/rtops-cache-port-forward.log || true
+          EOF
