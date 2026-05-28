@@ -79,18 +79,6 @@ jobs:
           echo "API did not become healthy in time"
           exit 1
 
-      - name: Run Kubernetes seed job on EC2
-        run: |
-          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
-          set -euo pipefail
-          export KUBECONFIG="$HOME/.kube/config"
-
-          SEED_JOB="e2e-seed-${{ github.run_id }}"
-          kubectl delete job "${SEED_JOB}" -n rtops --ignore-not-found=true
-          kubectl create job "${SEED_JOB}" -n rtops --from=job/seed
-          kubectl wait --for=condition=complete "job/${SEED_JOB}" -n rtops --timeout=120s
-          EOF
-
       - name: Run E2E tests
         timeout-minutes: 10
         env:
@@ -219,7 +207,6 @@ jobs:
           kubectl get pods -n rtops
           kubectl get jobs -n rtops
           kubectl logs deploy/api -n rtops --tail=100 || true
-          kubectl logs job/seed -n rtops --tail=100 || true
           cat /tmp/rtops-api-port-forward.log || true
           cat /tmp/rtops-postgres-port-forward.log || true
           cat /tmp/rtops-cache-port-forward.log || true

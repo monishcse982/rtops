@@ -42,7 +42,22 @@ jobs:
           set -euo pipefail
           export KUBECONFIG="$HOME/.kube/config"
 
-          pkill -f "kubectl port-forward.*svc/api" || true
+          for pid in $(ss -ltnp 'sport = :8000' | sed -n 's/.*pid=\([0-9]\+\).*/\1/p' | sort -u); do
+            kill "$pid" || true
+          done
+
+          for _ in {1..10}; do
+            if ! ss -ltn 'sport = :8000' | grep -q ':8000'; then
+              break
+            fi
+            sleep 1
+          done
+
+          if ss -ltn 'sport = :8000' | grep -q ':8000'; then
+            echo "Port 8000 is still in use on EC2"
+            ss -ltnp 'sport = :8000' || true
+            exit 1
+          fi
 
           nohup kubectl port-forward svc/api 8000:8000 -n rtops > /tmp/rtops-api-port-forward.log 2>&1 &
 
@@ -73,9 +88,13 @@ jobs:
       - name: Run performance tests
         env:
           LOCUST_HOST: http://localhost:8000
-          LOCUST_USERS: 10
-          LOCUST_SPAWN_RATE: 2
-          LOCUST_RUN_TIME: 1m
+          LOCUST_RAMP_UP_USERS: 10
+          LOCUST_RAMP_UP_DURATION: 20
+          LOCUST_SUSTAIN_USERS: 10
+          LOCUST_SUSTAIN_DURATION: 40
+          LOCUST_RAMP_DOWN_USERS: 0
+          LOCUST_RAMP_DOWN_DURATION: 20
+          LOCUST_EXIT_CODE_ON_ERROR: 0
           SKIP_REPORT_PUBLISH: "1"
         run: ./scripts/run_perf_tests.sh
 
@@ -86,6 +105,22 @@ jobs:
 
           if [ -d reports/locust ] && [ -n "$(find reports/locust -type f -print -quit)" ]; then
             cp -R reports/locust/. public/
+
+            REPORT_PATH="$(find public -type f -name report.html | sort | tail -n 1)"
+            REPORT_PATH="${REPORT_PATH#public/}"
+            cat > public/index.html <<EOF
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <meta http-equiv="refresh" content="0; url=${REPORT_PATH}">
+              <title>Performance Report</title>
+            </head>
+            <body>
+              <p>Redirecting to <a href="${REPORT_PATH}">performance report</a>.</p>
+            </body>
+          </html>
+          EOF
           else
             cat > public/index.html <<'EOF'
           <!doctype html>
@@ -166,4 +201,13 @@ jobs:
           kubectl get jobs -n rtops
           kubectl logs deploy/api -n rtops --tail=100 || true
           cat /tmp/rtops-api-port-forward.log || true
+          EOF
+
+      - name: Stop Kubernetes API port-forward on EC2
+        if: always()
+        run: |
+          ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          for pid in $(ss -ltnp 'sport = :8000' | sed -n 's/.*pid=\([0-9]\+\).*/\1/p' | sort -u); do
+            kill "$pid" || true
+          done
           EOF

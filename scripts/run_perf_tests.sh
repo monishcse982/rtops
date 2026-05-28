@@ -12,19 +12,21 @@ LOCUST_HOST="${LOCUST_HOST:-http://localhost:8000}"
 LOCUST_USERS="${LOCUST_USERS:-10}"
 LOCUST_SPAWN_RATE="${LOCUST_SPAWN_RATE:-2}"
 LOCUST_RUN_TIME="${LOCUST_RUN_TIME:-1m}"
+LOCUST_EXIT_CODE_ON_ERROR="${LOCUST_EXIT_CODE_ON_ERROR:-1}"
 
 if [ "$#" -gt 0 ]; then
   echo "Running performance tests with custom Locust arguments..."
-  locust "$@"
+  uv run locust "$@"
 else
   echo "Running performance tests..."
-  locust \
+  uv run locust \
     --config "${LOCUST_CONFIG}" \
     --host "${LOCUST_HOST}" \
     --headless \
     -u "${LOCUST_USERS}" \
     -r "${LOCUST_SPAWN_RATE}" \
-    -t "${LOCUST_RUN_TIME}"
+    -t "${LOCUST_RUN_TIME}" \
+    --exit-code-on-error "${LOCUST_EXIT_CODE_ON_ERROR}"
 fi
 
 echo "Performance report artifacts are available under reports/locust."
