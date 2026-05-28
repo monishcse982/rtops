@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Product with name 'Travel Flask' already exists"
+  },
+  "headers": {
+    "content-length": "60",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:08:46 GMT",
+    "server": "uvicorn",
+    "x-request-id": "0cfbdcff-e629-4a1f-a24d-4e4d2fd90765",
+    "x-trace-id": "0cfbdcff-e629-4a1f-a24d-4e4d2fd90765"
+  },
+  "status_code": 409
+}

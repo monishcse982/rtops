@@ -1,0 +1,5 @@
+{
+  "actual": "Cannot delete product that is referenced in existing orders",
+  "description": "delete referenced product error message",
+  "expected": "Cannot delete product that is referenced in existing orders"
+}

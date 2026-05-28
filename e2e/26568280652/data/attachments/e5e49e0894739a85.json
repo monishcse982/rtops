@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Cannot delete product that is referenced in existing orders"
+  },
+  "headers": {
+    "content-length": "72",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:56 GMT",
+    "server": "uvicorn",
+    "x-request-id": "ee43c6f3-8a46-45c0-850d-a93a352d8345",
+    "x-trace-id": "ee43c6f3-8a46-45c0-850d-a93a352d8345"
+  },
+  "status_code": 400
+}

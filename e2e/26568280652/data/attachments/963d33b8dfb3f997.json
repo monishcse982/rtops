@@ -1,0 +1,9 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "DELETE",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/106"
+}

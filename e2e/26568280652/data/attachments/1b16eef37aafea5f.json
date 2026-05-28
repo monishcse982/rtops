@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Product with name 'Wireless Keyboard' already exists"
+  },
+  "headers": {
+    "content-length": "65",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:34 GMT",
+    "server": "uvicorn",
+    "x-request-id": "381ac3b0-32fa-4212-a78b-ab03bea46963",
+    "x-trace-id": "381ac3b0-32fa-4212-a78b-ab03bea46963"
+  },
+  "status_code": 409
+}

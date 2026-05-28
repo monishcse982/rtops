@@ -1,0 +1,16 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "items": [
+      {
+        "product_id": 59,
+        "quantity": 2
+      }
+    ]
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/orders/"
+}

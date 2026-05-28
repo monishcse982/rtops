@@ -1,0 +1,1 @@
+curl -X PUT -H 'Content-Type: application/json' --data '{"name":"updated-product-a105e5e0","description":"Updated by E2E test","price":"49.99","stock":11}' http://localhost:8000/api/products/2

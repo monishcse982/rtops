@@ -1,0 +1,1 @@
+curl -X GET -H 'X-Request-ID: req-order-details-001' http://localhost:8000/api/orders/2723

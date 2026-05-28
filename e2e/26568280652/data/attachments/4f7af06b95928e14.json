@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Hard floor protective chair mat",
+    "name": "",
+    "price": "64.00",
+    "stock": 32
+  },
+  "method": "PUT",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/3"
+}

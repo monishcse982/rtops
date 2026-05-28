@@ -1,0 +1,5 @@
+{
+  "actual": "ready_to_ship",
+  "description": "invalid transition leaves order status unchanged",
+  "expected": "ready_to_ship"
+}

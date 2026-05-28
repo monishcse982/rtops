@@ -1,0 +1,37 @@
+{
+  "body": {
+    "items": [
+      {
+        "created_at": "2026-05-28T10:09:07.302035",
+        "description": "Inserted by E2E test",
+        "id": 99,
+        "name": "sort-fallback-02b96dd5-b",
+        "price": "20.00",
+        "stock": 1,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-28T10:09:08.164849",
+        "description": "Inserted by E2E test",
+        "id": 100,
+        "name": "sort-fallback-02b96dd5-a",
+        "price": "10.00",
+        "stock": 1,
+        "updated_at": null
+      }
+    ],
+    "page": 1,
+    "page_size": 100,
+    "pages": 1,
+    "total": 2
+  },
+  "headers": {
+    "content-length": "391",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:09 GMT",
+    "server": "uvicorn",
+    "x-request-id": "8c5da7ce-9c90-4fcb-848b-7a65a47703da",
+    "x-trace-id": "8c5da7ce-9c90-4fcb-848b-7a65a47703da"
+  },
+  "status_code": 200
+}

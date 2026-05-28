@@ -1,0 +1,199 @@
+{
+  "body": {
+    "items": [
+      {
+        "created_at": "2026-05-25T18:31:37.714461",
+        "description": "Updated by E2E test",
+        "id": 1,
+        "name": "updated-product-dca75317",
+        "price": "49.99",
+        "stock": 11,
+        "updated_at": "2026-05-28T08:17:23.428725"
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714467",
+        "description": "Updated by E2E test",
+        "id": 2,
+        "name": "updated-product-a105e5e0",
+        "price": "49.99",
+        "stock": 11,
+        "updated_at": "2026-05-28T10:09:28.470307"
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714468",
+        "description": "Hard floor protective chair mat",
+        "id": 3,
+        "name": "Office Chair Mat",
+        "price": "64.00",
+        "stock": 32,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714469",
+        "description": "Compact keyboard with rechargeable battery",
+        "id": 4,
+        "name": "Wireless Keyboard",
+        "price": "79.99",
+        "stock": 48,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714470",
+        "description": "Low-latency ergonomic mouse",
+        "id": 5,
+        "name": "Wireless Mouse",
+        "price": "44.95",
+        "stock": 75,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714471",
+        "description": "Docking station with dual monitor support",
+        "id": 6,
+        "name": "USB-C Dock",
+        "price": "159.00",
+        "stock": 18,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714472",
+        "description": "Over-ear headset with boom mic",
+        "id": 7,
+        "name": "Noise Canceling Headset",
+        "price": "189.99",
+        "stock": 21,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714472",
+        "description": "Electric sit-stand desk frame and top",
+        "id": 8,
+        "name": "Standing Desk",
+        "price": "549.00",
+        "stock": 12,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714473",
+        "description": "Dimmable lamp with USB charging port",
+        "id": 9,
+        "name": "LED Desk Lamp",
+        "price": "39.50",
+        "stock": 90,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714474",
+        "description": "Velcro ties, sleeves and cable clips",
+        "id": 10,
+        "name": "Cable Organizer Kit",
+        "price": "18.25",
+        "stock": 200,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714475",
+        "description": "Single monitor VESA arm mount",
+        "id": 11,
+        "name": "Monitor Arm",
+        "price": "88.00",
+        "stock": 44,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714476",
+        "description": "High resolution conferencing webcam",
+        "id": 12,
+        "name": "Webcam 4K",
+        "price": "129.99",
+        "stock": 16,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714476",
+        "description": "Three ruled notebooks bundle",
+        "id": 13,
+        "name": "Notebook Set",
+        "price": "15.75",
+        "stock": 160,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714477",
+        "description": "Pack of 10 pencils with refill leads",
+        "id": 14,
+        "name": "Mechanical Pencil Pack",
+        "price": "9.99",
+        "stock": 300,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714478",
+        "description": "Monthly wall planner whiteboard",
+        "id": 15,
+        "name": "Whiteboard Planner",
+        "price": "34.99",
+        "stock": 55,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714479",
+        "description": "Compact shipping-label printer",
+        "id": 16,
+        "name": "Thermal Printer",
+        "price": "219.00",
+        "stock": 9,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714479",
+        "description": "Bluetooth barcode scanner",
+        "id": 17,
+        "name": "Warehouse Scanner",
+        "price": "145.49",
+        "stock": 14,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714480",
+        "description": "Set of heavy-duty packing tapes",
+        "id": 18,
+        "name": "Packaging Tape Pack",
+        "price": "22.10",
+        "stock": 0,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714481",
+        "description": "Printable adhesive return-label sheets",
+        "id": 19,
+        "name": "Return Labels",
+        "price": "11.80",
+        "stock": 85,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714482",
+        "description": "Metal-bodied pen gift edition",
+        "id": 20,
+        "name": "Premium Fountain Pen",
+        "price": "249.95",
+        "stock": 5,
+        "updated_at": null
+      }
+    ],
+    "page": 1,
+    "page_size": 20,
+    "pages": 6,
+    "total": 103
+  },
+  "headers": {
+    "content-length": "3541",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:30 GMT",
+    "server": "uvicorn",
+    "x-request-id": "req-products-list-001",
+    "x-trace-id": "req-products-list-001"
+  },
+  "status_code": 200
+}

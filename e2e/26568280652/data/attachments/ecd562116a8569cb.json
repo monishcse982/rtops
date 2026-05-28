@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-05-28T10:07:17.611115",
+  "event_type": "order.created",
+  "id": 2680,
+  "last_error": "Error during publish for event 'order.created': Stream connection lost: ConnectionResetError(104, 'Connection reset by peer')",
+  "payload": {
+    "event": "order.created",
+    "order_id": 2719,
+    "request_id": "77408ee9-4f57-42c3-a4d7-0496f2cd6ca6",
+    "timestamp": "2026-05-28T10:07:17.610876+00:00",
+    "total_price": 35.88
+  },
+  "publish_attempts": 1,
+  "published_at": null,
+  "request_id": "77408ee9-4f57-42c3-a4d7-0496f2cd6ca6"
+}

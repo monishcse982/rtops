@@ -1,0 +1,1 @@
+curl -X POST -H 'Content-Type: application/json' --data '{"name":"  trimmed-product-11fb392d  ","description":"Whitespace trimmed","price":"22.00","stock":4}' http://localhost:8000/api/products/

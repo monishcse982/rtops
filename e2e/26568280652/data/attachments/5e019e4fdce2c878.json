@@ -1,0 +1,27 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "error": {}
+        },
+        "input": "   ",
+        "loc": [
+          "body",
+          "name"
+        ],
+        "msg": "Value error, Name cannot be empty or just whitespace",
+        "type": "value_error"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "151",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:44 GMT",
+    "server": "uvicorn",
+    "x-request-id": "ad65398c-4bb9-4712-9f02-0c9f9886de9c",
+    "x-trace-id": "ad65398c-4bb9-4712-9f02-0c9f9886de9c"
+  },
+  "status_code": 422
+}

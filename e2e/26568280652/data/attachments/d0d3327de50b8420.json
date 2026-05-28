@@ -1,0 +1,5 @@
+{
+  "actual": "req-products-list-001",
+  "expected": "req-products-list-001",
+  "header": "X-Trace-ID"
+}

@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Items not found: 999999"
+  },
+  "headers": {
+    "content-length": "36",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:07:27 GMT",
+    "server": "uvicorn",
+    "x-request-id": "10fce07a-90c6-49b4-8fae-348c973e43eb",
+    "x-trace-id": "10fce07a-90c6-49b4-8fae-348c973e43eb"
+  },
+  "status_code": 404
+}

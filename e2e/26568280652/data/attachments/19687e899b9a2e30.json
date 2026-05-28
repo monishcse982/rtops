@@ -1,0 +1,5 @@
+{
+  "actual": "in_preparation",
+  "description": "pay order response status is in_preparation",
+  "expected": "in_preparation"
+}

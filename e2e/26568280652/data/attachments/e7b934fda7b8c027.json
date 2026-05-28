@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "min_price cannot be greater than max_price"
+  },
+  "headers": {
+    "content-length": "55",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:23 GMT",
+    "server": "uvicorn",
+    "x-request-id": "0d9e24dd-efbf-47a8-b404-a148396c2376",
+    "x-trace-id": "0d9e24dd-efbf-47a8-b404-a148396c2376"
+  },
+  "status_code": 400
+}

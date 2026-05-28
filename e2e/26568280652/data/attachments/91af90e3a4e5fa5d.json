@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Order not found"
+  },
+  "headers": {
+    "content-length": "28",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:07:45 GMT",
+    "server": "uvicorn",
+    "x-request-id": "9fef5037-6ad4-40d2-96cc-94e5970d30a3",
+    "x-trace-id": "9fef5037-6ad4-40d2-96cc-94e5970d30a3"
+  },
+  "status_code": 404
+}

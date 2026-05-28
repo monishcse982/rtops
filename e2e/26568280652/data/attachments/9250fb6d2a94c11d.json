@@ -1,0 +1,17 @@
+{
+  "body": {
+    "message": "Order created successfully",
+    "order_id": 2719,
+    "status": "created",
+    "total_price": "35.880"
+  },
+  "headers": {
+    "content-length": "98",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:07:17 GMT",
+    "server": "uvicorn",
+    "x-request-id": "77408ee9-4f57-42c3-a4d7-0496f2cd6ca6",
+    "x-trace-id": "77408ee9-4f57-42c3-a4d7-0496f2cd6ca6"
+  },
+  "status_code": 201
+}

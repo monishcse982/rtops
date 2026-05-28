@@ -1,0 +1,64 @@
+{
+  "body": {
+    "items": [
+      {
+        "created_at": "2026-05-25T18:31:37.714461",
+        "description": "Updated by E2E test",
+        "id": 1,
+        "name": "updated-product-dca75317",
+        "price": "49.99",
+        "stock": 11,
+        "updated_at": "2026-05-28T08:17:23.428725"
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714467",
+        "description": "Vacuum flask for commuters",
+        "id": 2,
+        "name": "Travel Flask",
+        "price": "29.90",
+        "stock": 140,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714468",
+        "description": "Hard floor protective chair mat",
+        "id": 3,
+        "name": "Office Chair Mat",
+        "price": "64.00",
+        "stock": 32,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714469",
+        "description": "Compact keyboard with rechargeable battery",
+        "id": 4,
+        "name": "Wireless Keyboard",
+        "price": "79.99",
+        "stock": 48,
+        "updated_at": null
+      },
+      {
+        "created_at": "2026-05-25T18:31:37.714470",
+        "description": "Low-latency ergonomic mouse",
+        "id": 5,
+        "name": "Wireless Mouse",
+        "price": "44.95",
+        "stock": 75,
+        "updated_at": null
+      }
+    ],
+    "page": 1,
+    "page_size": 5,
+    "pages": 19,
+    "total": 91
+  },
+  "headers": {
+    "content-length": "924",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:08:51 GMT",
+    "server": "uvicorn",
+    "x-request-id": "44d3a45d-5fb5-435b-890b-21fd9b38c6a7",
+    "x-trace-id": "44d3a45d-5fb5-435b-890b-21fd9b38c6a7"
+  },
+  "status_code": 200
+}

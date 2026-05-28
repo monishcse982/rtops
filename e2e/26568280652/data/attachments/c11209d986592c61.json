@@ -1,0 +1,5 @@
+{
+  "actual": 0,
+  "description": "failed create leaves outbox count unchanged",
+  "expected": 0
+}

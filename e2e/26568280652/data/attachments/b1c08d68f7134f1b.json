@@ -1,0 +1,17 @@
+{
+  "body": {
+    "message": "Order marked as ready to ship",
+    "order_id": 2725,
+    "status": "ready_to_ship",
+    "tracking_info": null
+  },
+  "headers": {
+    "content-length": "105",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:07:56 GMT",
+    "server": "uvicorn",
+    "x-request-id": "53522072-09e2-4853-b037-3bea7cde80e0",
+    "x-trace-id": "53522072-09e2-4853-b037-3bea7cde80e0"
+  },
+  "status_code": 200
+}

@@ -1,0 +1,13 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "GET",
+  "params": {
+    "page": 1,
+    "page_size": 1,
+    "search": "page-beyond-f40d7358"
+  },
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

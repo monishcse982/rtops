@@ -1,0 +1,5 @@
+{
+  "actual": "shipped",
+  "description": "ship response status is shipped",
+  "expected": "shipped"
+}

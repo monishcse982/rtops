@@ -1,0 +1,13 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "GET",
+  "params": {
+    "page_size": 100,
+    "search": "sort-fallback-02b96dd5",
+    "sort_by": "not_a_real_field"
+  },
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

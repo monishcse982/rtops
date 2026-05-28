@@ -1,0 +1,5 @@
+{
+  "actual": "Created by E2E test",
+  "description": "created product description matches request",
+  "expected": "Created by E2E test"
+}

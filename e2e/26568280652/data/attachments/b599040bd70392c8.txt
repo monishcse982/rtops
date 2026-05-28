@@ -1,0 +1,2 @@
+SELECT line_items.id, line_items.order_id, line_items.product_id, line_items.quantity 
+FROM line_items

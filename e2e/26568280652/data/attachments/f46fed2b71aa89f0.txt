@@ -1,0 +1,1 @@
+curl -X PUT -H 'Content-Type: application/json' --data '{"name":"Wireless Keyboard","description":"Hard floor protective chair mat","price":"64.00","stock":32}' http://localhost:8000/api/products/3

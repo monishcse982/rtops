@@ -1,0 +1,5 @@
+{
+  "actual": "Items not found: 999999",
+  "description": "missing product error message",
+  "expected": "Items not found: 999999"
+}

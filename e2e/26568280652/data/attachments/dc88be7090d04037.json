@@ -1,0 +1,5 @@
+{
+  "actual": 5,
+  "description": "product list page size matches request",
+  "expected": 5
+}

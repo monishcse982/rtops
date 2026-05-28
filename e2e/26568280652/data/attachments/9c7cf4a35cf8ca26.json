@@ -1,0 +1,5 @@
+{
+  "actual": "order.shipped",
+  "description": "outbox payload event is order.shipped",
+  "expected": "order.shipped"
+}

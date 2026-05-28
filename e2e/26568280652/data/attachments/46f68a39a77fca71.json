@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Whitespace trimmed",
+    "name": "  trimmed-product-11fb392d  ",
+    "price": "22.00",
+    "stock": 4
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

@@ -1,0 +1,18 @@
+{
+  "data": null,
+  "headers": {
+    "X-Request-ID": "req-e2e-create-001"
+  },
+  "json": {
+    "items": [
+      {
+        "product_id": 2,
+        "quantity": 1
+      }
+    ]
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/orders/"
+}

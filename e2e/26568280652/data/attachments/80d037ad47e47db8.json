@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-05-28T10:08:07.087238",
+  "event_type": "order.delivered",
+  "id": 2688,
+  "last_error": null,
+  "payload": {
+    "event": "order.delivered",
+    "order_id": 2727,
+    "request_id": "94cf47d1-7080-4b0d-9bd7-7707f159fef7",
+    "timestamp": "2026-05-28T10:08:07.086361+00:00"
+  },
+  "publish_attempts": 1,
+  "published_at": "2026-05-28T10:08:07.090928",
+  "request_id": "94cf47d1-7080-4b0d-9bd7-7707f159fef7"
+}

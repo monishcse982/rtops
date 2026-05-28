@@ -1,0 +1,3 @@
+SELECT outbox_events.id, outbox_events.event_type, outbox_events.payload, outbox_events.request_id, outbox_events.created_at, outbox_events.published_at, outbox_events.publish_attempts, outbox_events.last_error 
+FROM outbox_events 
+WHERE outbox_events.event_type = 'order.created' AND outbox_events.payload['order_id'] = 2719

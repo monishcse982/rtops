@@ -1,0 +1,3 @@
+SELECT products.id, products.name, products.description, products.price, products.stock, products.created_at, products.updated_at 
+FROM products 
+WHERE products.id = 92

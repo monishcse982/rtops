@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Order cannot be marked as delivered in its current state: ready_to_ship"
+  },
+  "headers": {
+    "content-length": "84",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:08:15 GMT",
+    "server": "uvicorn",
+    "x-request-id": "e7568b06-2a99-42f3-ae93-6885d953f808",
+    "x-trace-id": "e7568b06-2a99-42f3-ae93-6885d953f808"
+  },
+  "status_code": 400
+}

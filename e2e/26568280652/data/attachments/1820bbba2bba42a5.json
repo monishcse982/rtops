@@ -1,0 +1,17 @@
+{
+  "actual": [
+    "order.created",
+    "order.paid",
+    "order.ready.to.ship",
+    "order.shipped",
+    "order.delivered"
+  ],
+  "description": "full lifecycle writes the expected outbox event sequence",
+  "expected": [
+    "order.created",
+    "order.paid",
+    "order.ready.to.ship",
+    "order.shipped",
+    "order.delivered"
+  ]
+}

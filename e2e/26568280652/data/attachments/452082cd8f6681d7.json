@@ -1,0 +1,78 @@
+[
+  {
+    "created_at": "2026-05-28T10:08:38.000814",
+    "event_type": "order.created",
+    "id": 2693,
+    "last_error": null,
+    "payload": {
+      "event": "order.created",
+      "order_id": 2735,
+      "request_id": "bea64ca1-51b5-47c6-94ce-7792820df63c",
+      "timestamp": "2026-05-28T10:08:38.000550+00:00",
+      "total_price": 35.88
+    },
+    "publish_attempts": 1,
+    "published_at": "2026-05-28T10:08:38.005832",
+    "request_id": "bea64ca1-51b5-47c6-94ce-7792820df63c"
+  },
+  {
+    "created_at": "2026-05-28T10:08:39.352073",
+    "event_type": "order.paid",
+    "id": 2694,
+    "last_error": null,
+    "payload": {
+      "event": "order.paid",
+      "order_id": 2735,
+      "request_id": "8ee97005-c855-420e-bc4c-951b060f6917",
+      "timestamp": "2026-05-28T10:08:39.351151+00:00"
+    },
+    "publish_attempts": 1,
+    "published_at": "2026-05-28T10:08:39.355840",
+    "request_id": "8ee97005-c855-420e-bc4c-951b060f6917"
+  },
+  {
+    "created_at": "2026-05-28T10:08:39.796425",
+    "event_type": "order.ready.to.ship",
+    "id": 2695,
+    "last_error": null,
+    "payload": {
+      "event": "order.ready.to.ship",
+      "order_id": 2735,
+      "request_id": "a387eb34-0827-4286-b7c3-c70673b186c2",
+      "timestamp": "2026-05-28T10:08:39.795546+00:00"
+    },
+    "publish_attempts": 1,
+    "published_at": "2026-05-28T10:08:39.800112",
+    "request_id": "a387eb34-0827-4286-b7c3-c70673b186c2"
+  },
+  {
+    "created_at": "2026-05-28T10:08:40.240909",
+    "event_type": "order.shipped",
+    "id": 2696,
+    "last_error": null,
+    "payload": {
+      "event": "order.shipped",
+      "order_id": 2735,
+      "request_id": "e084ad54-33f7-4f19-894f-517f135b4611",
+      "timestamp": "2026-05-28T10:08:40.239917+00:00"
+    },
+    "publish_attempts": 1,
+    "published_at": "2026-05-28T10:08:40.244429",
+    "request_id": "e084ad54-33f7-4f19-894f-517f135b4611"
+  },
+  {
+    "created_at": "2026-05-28T10:08:40.685679",
+    "event_type": "order.delivered",
+    "id": 2697,
+    "last_error": null,
+    "payload": {
+      "event": "order.delivered",
+      "order_id": 2735,
+      "request_id": "71c90039-bddd-45e2-b639-c6cc4bee00fe",
+      "timestamp": "2026-05-28T10:08:40.684787+00:00"
+    },
+    "publish_attempts": 1,
+    "published_at": "2026-05-28T10:08:40.690731",
+    "request_id": "71c90039-bddd-45e2-b639-c6cc4bee00fe"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "body": {
+    "items": [
+      {
+        "created_at": "2026-05-28T10:09:19.405529",
+        "description": "Inserted by E2E test",
+        "id": 103,
+        "name": "page-beyond-f40d7358-1",
+        "price": "10.00",
+        "stock": 1,
+        "updated_at": null
+      }
+    ],
+    "page": 1,
+    "page_size": 1,
+    "pages": 2,
+    "total": 2
+  },
+  "headers": {
+    "content-length": "220",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:21 GMT",
+    "server": "uvicorn",
+    "x-request-id": "e17747d4-1de4-4836-bc1a-ddaaacd01045",
+    "x-trace-id": "e17747d4-1de4-4836-bc1a-ddaaacd01045"
+  },
+  "status_code": 200
+}

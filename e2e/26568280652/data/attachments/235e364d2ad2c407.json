@@ -1,0 +1,28 @@
+{
+  "body": {
+    "items": [
+      {
+        "created_at": "2026-05-28T10:09:14.863885",
+        "description": "Inserted by E2E test",
+        "id": 102,
+        "name": "stock-false-483317f0",
+        "price": "12.00",
+        "stock": 0,
+        "updated_at": null
+      }
+    ],
+    "page": 1,
+    "page_size": 100,
+    "pages": 1,
+    "total": 1
+  },
+  "headers": {
+    "content-length": "220",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 10:09:15 GMT",
+    "server": "uvicorn",
+    "x-request-id": "b0627227-f475-4ac8-a833-af558296d7ba",
+    "x-trace-id": "b0627227-f475-4ac8-a833-af558296d7ba"
+  },
+  "status_code": 200
+}
