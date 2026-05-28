@@ -7,18 +7,16 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/api/products/"
+  url: "{{baseUrl}}/api/products/?page=1&page_size=10"
   params:
     - name: page
       value: "1"
       type: query
       description: Page number, starting from 1
-      disabled: true
     - name: page_size
-      value: "20"
+      value: "10"
       type: query
       description: Number of items per page (1-100)
-      disabled: true
     - name: sort_by
       value: id
       type: query

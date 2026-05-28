@@ -1,4 +1,5 @@
 name: local
+color: "#2E8A54"
 variables:
   - name: baseUrl
     value: http://localhost:8000
