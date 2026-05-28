@@ -40,6 +40,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
           set -euo pipefail
+          export KUBECONFIG="$HOME/.kube/config"
 
           pkill -f "kubectl port-forward.*svc/api" || true
 
@@ -159,6 +160,8 @@ jobs:
         if: failure()
         run: |
           ssh -i ~/.ssh/rtops_ec2 "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" <<'EOF'
+          export KUBECONFIG="$HOME/.kube/config"
+
           kubectl get pods -n rtops
           kubectl get jobs -n rtops
           kubectl logs deploy/api -n rtops --tail=100 || true
