@@ -21,6 +21,8 @@ The repository also already runs meaningful validation on commit and push bounda
 
 We need a reporting strategy that explains what evidence each test layer should produce and how PR-time validation should be treated.
 
+The project now also publishes report artifacts through GitHub Pages from EC2 Kubernetes E2E and performance workflows.
+
 ## Decision
 
 We will use layer-appropriate reporting rather than forcing all tests into a single reporting format.
@@ -30,6 +32,7 @@ Specifically:
 1. Functional E2E tests will continue to prefer rich diagnostic reporting.
 2. Performance tests will continue to prefer lightweight timestamped run artifacts.
 3. PR-time validation checks will be treated as first-class quality signals and should be visible in the development workflow even when they do not produce the same style of artifact as test suites.
+4. GitHub Pages will be the current public report surface for portfolio/demo review.
 
 ## Functional Test Reporting
 
@@ -56,6 +59,17 @@ The current preferred outputs are:
 - JSON stats output
 
 These are appropriate because performance runs are evaluated through trends, request distributions, throughput, and latency summaries rather than deep per-request debugging.
+
+## Published Report Links
+
+GitHub Actions workflows publish run-specific and latest-report links to GitHub Pages.
+
+The current public surfaces are:
+
+- latest E2E report: `https://monishcse982.github.io/rtops/e2e/latest/`
+- latest performance report: `https://monishcse982.github.io/rtops/perf/latest/`
+
+Representative sample reports may be linked from project documentation to make the output visible without requiring a new workflow run.
 
 ## PR Validation As A Reporting Signal
 
@@ -122,10 +136,12 @@ At the time of this ADR:
 
 - functional E2E reporting is already helper-driven and evidence-rich
 - performance reporting is already timestamped and file-based
+- E2E and performance workflows publish GitHub Pages reports
 - commit and push hooks already enforce meaningful repo-level validation on every PR workflow
 
 ## Follow-Up
 
 - Keep PR descriptions explicit about what testing and validation ran.
-- Expand report publishing only when there is a concrete consumer for stored results.
+- Keep GitHub Pages report links visible from project documentation.
+- Revisit S3 or object-storage publishing only when there is a concrete consumer beyond GitHub Pages.
 - Avoid adding a second reporting pattern when an existing helper or artifact style already fits the need.

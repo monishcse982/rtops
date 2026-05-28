@@ -39,11 +39,11 @@ examples:
           {
             "items": [
               {
-                "item_id": 1,
+                "product_id": 1,
                 "quantity": 2
               },
               {
-                "item_id": 3,
+                "product_id": 3,
                 "quantity": 1
               }
             ]
@@ -74,11 +74,11 @@ examples:
           {
             "items": [
               {
-                "item_id": 1,
+                "product_id": 1,
                 "quantity": 2
               },
               {
-                "item_id": 3,
+                "product_id": 3,
                 "quantity": 1
               }
             ]
@@ -100,12 +100,8 @@ examples:
           {
             "items": [
               {
-                "item_id": 1,
+                "product_id": 999999,
                 "quantity": 2
-              },
-              {
-                "item_id": 3,
-                "quantity": 1
               }
             ]
           }
@@ -126,12 +122,8 @@ examples:
           {
             "items": [
               {
-                "item_id": 1,
-                "quantity": 2
-              },
-              {
-                "item_id": 3,
-                "quantity": 1
+                "product_id": 1,
+                "quantity": 0
               }
             ]
           }
@@ -166,11 +158,11 @@ examples:
           {
             "items": [
               {
-                "item_id": 1,
+                "product_id": 1,
                 "quantity": 2
               },
               {
-                "item_id": 3,
+                "product_id": 3,
                 "quantity": 1
               }
             ]
@@ -186,7 +178,7 @@ docs: |-
   Create a new order with multiple line items.
 
   ## Request Body
-  - `items`: List of items to include in the order, each with an item_id and quantity
+  - `items`: List of products to include in the order, each with a `product_id` and `quantity`
 
   ## Returns
   - `order_id`: ID of the created order
@@ -194,5 +186,6 @@ docs: |-
   - `status`: Order status
 
   ## Raises
-  - `400 Bad Request`: If the order has no items
-  - `404 Not Found`: If any of the requested items don't exist
+  - `404 Not Found`: If any referenced product does not exist
+  - `422 Unprocessable Entity`: If the request body is invalid
+  - `500 Internal Server Error`: If event publication or another server-side dependency fails

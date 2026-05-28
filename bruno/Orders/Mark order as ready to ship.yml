@@ -23,7 +23,7 @@ settings:
 
 examples:
   - name: 200 Response
-    description: Order status updated to ready_to_ship and order.ready.to.ship event published
+    description: Order status updated to ready_to_ship and order.ready.to.ship event queued for publication
     request:
       url: "{{baseUrl}}/api/orders/:order_id/ready-to-ship"
       method: POST
@@ -119,7 +119,7 @@ docs: |-
   ## Process
   - Validates that the order exists and is currently in 'in_preparation' state.
   - Updates the order status to 'ready_to_ship'.
-  - Publishes the 'order.ready.to.ship' event to notify the carrier for pickup.
+  - Records the `order.ready.to.ship` event in the outbox and publishes pending events to notify the carrier for pickup.
 
   ## Returns
   - An OrderStatusResponse containing a success message, the order ID, and the updated status.

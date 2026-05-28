@@ -18,6 +18,7 @@ We also discussed two intended usage modes:
 
 - headless runs for repeatable automated validation
 - UI-driven runs for on-demand exploratory load testing
+- GitHub Actions runs against the EC2 Kubernetes environment for reportable baselines
 
 We need a consistent execution strategy so local use, future automation, and shape-based load modeling all stay aligned.
 
@@ -29,6 +30,7 @@ We will support two primary execution modes:
 
 1. Local interactive runs through the Locust UI
 2. Headless scripted runs for repeatable validation
+3. GitHub Actions runs against the deployed EC2 Kubernetes environment
 
 We will prefer custom `LoadTestShape` classes for meaningful load patterns and use direct `-u`, `-r`, and `-t` CLI inputs mainly for smoke runs and debugging.
 
@@ -58,6 +60,15 @@ Headless mode is preferred when:
 - running a repeatable smoke or baseline test
 - validating a deployed environment
 - capturing report artifacts for later review
+
+### GitHub Actions Mode
+
+GitHub Actions mode is preferred when:
+
+- running a visible portfolio/demo baseline
+- publishing Locust reports to GitHub Pages
+- validating the deployed EC2 Kubernetes environment from outside the cluster
+- preserving run-specific links in the workflow summary
 
 ## Load Profile Strategy
 
@@ -104,10 +115,12 @@ It should avoid:
 
 The intended operational direction already discussed is:
 
-- headless performance checks during or after environment startup
+- headless performance checks after the environment is already deployed
 - UI-driven Locust runs available for on-demand manual testing
 
-This ADR records that target model even though the surrounding automation may continue to evolve.
+The deployed cluster remains the system under test. The performance suite is run from GitHub Actions through a tunnel to the EC2-hosted Kubernetes API service rather than as an in-cluster Kubernetes Job.
+
+The current EC2 Kubernetes workflow uses a small explicit smoke/baseline shape. It sets the Locust error exit code to zero so the workflow can publish the report even when the baseline exposes service failures. Threshold-based failure gates should be added only after baseline behavior is understood.
 
 ## Consequences
 
@@ -127,13 +140,14 @@ This ADR records that target model even though the surrounding automation may co
 
 At the time of this ADR:
 
-- one performance user exists for product browsing
+- performance users exist for product browsing, order actions, and order journeys
 - one custom load shape exists
 - timestamped local report output is already configured
 - UI and headless usage are both supported locally
+- EC2 Kubernetes performance workflow publishes Locust reports to GitHub Pages
 
 ## Follow-Up
 
-- Add order checkout and order lifecycle Locust users.
 - Add mixed-traffic execution that combines browsing and order flows.
 - Document standard smoke, baseline, and stretch runs more explicitly if the suite grows.
+- Add explicit quality gates for performance only after enough baseline data is available.

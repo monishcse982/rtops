@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted, amended
 
 ## Context
 
@@ -29,14 +29,14 @@ We will use a single EC2 instance as the first deployed environment for this pro
 
 Specifically:
 
-1. The application stack will run on one EC2 instance using Docker Compose.
+1. The application stack will run on one EC2 instance.
 2. GitHub Actions will remain the orchestration layer for build, deployment, and test workflows.
 3. The deployment path will use a container registry rather than `git pull` on the server.
 4. GitHub Container Registry (GHCR) will be the first registry choice.
-5. The EC2 host will pull published images from GHCR and restart the stack with Docker Compose.
+5. The EC2 host will pull published images from GHCR.
 6. E2E and performance workflows should target the deployed environment rather than always bootstrapping a fresh stack inside the workflow runner.
 7. GitHub service containers and workflow-local Docker Compose remain valid for isolated CI validation, but they are not the deployment platform for the persistent environment.
-8. MinIO may be hosted on the same EC2 instance as part of the deployed stack for report storage.
+8. Kubernetes will be the deployment model for the hosted test environment.
 
 ## Why GHCR First
 
@@ -70,12 +70,28 @@ The expected deployment flow is:
 1. GitHub Actions builds the application image
 2. GitHub Actions pushes the image to GHCR
 3. GitHub Actions connects to the EC2 host
-4. the EC2 host pulls the new image
-5. Docker Compose restarts the stack
-6. health checks confirm the service is back up
-7. separate workflows can then run E2E or performance tests against the deployed URL
+4. the EC2 host updates the local repository checkout
+5. the deployment workflow writes runtime-only Kubernetes secret material on the host
+6. `kubectl apply -k k8s/overlays/ec2` deploys the stack to k3s
+7. migration and seed jobs run in Kubernetes
+8. health checks confirm the service is back up
+9. separate workflows run E2E or performance tests against the deployed Kubernetes environment
 
 This keeps deployment and test execution separate while still allowing GitHub Actions to coordinate both.
+
+## Amendment: EC2 Runs k3s Instead Of Docker Compose
+
+The initial single-box direction was proven with Docker Compose, but the project moved to k3s on EC2 for the hosted test environment.
+
+This change better matches the project goals because:
+
+- Kubernetes manifests were already part of the project.
+- Local development already uses k3d and kustomize overlays.
+- The hosted environment now exercises the same deployment model as local Kubernetes.
+- Deployment behavior, migration jobs, seed jobs, service readiness, and port-forwarding are closer to the system the tests are meant to validate.
+- The project can demonstrate Kubernetes-oriented test infrastructure without jumping to a full managed cloud platform.
+
+The EC2 instance is still intentionally single-box. The change is from Docker Compose orchestration to lightweight Kubernetes orchestration, not from a simple environment to a large production cloud setup.
 
 ## Scope Of The Single-Box Environment
 
@@ -86,7 +102,7 @@ The first EC2 environment may include:
 - RabbitMQ
 - Redis or Valkey
 - background consumers
-- MinIO for report storage
+- migration and seed jobs
 
 This is intentionally a pragmatic baseline, not the final cloud architecture.
 
@@ -106,6 +122,7 @@ This is intentionally a pragmatic baseline, not the final cloud architecture.
 - Tighter resource sharing because the application, infrastructure, and report storage live on one host.
 - Lower fidelity to a production-style multi-service cloud deployment.
 - Heavier performance runs may be constrained by sharing a single box with all dependencies.
+- Some Kubernetes operations still require host preparation, such as kubeconfig access, image pull secrets, and runtime secret files.
 
 ## Learning Strategy
 
@@ -124,16 +141,14 @@ That phased approach keeps the initial deployment tractable while still leaving 
 
 ## Consequences
 
-- Deployment workflows should now be designed around image publication and remote host restart, not in-cluster job execution.
-- E2E and performance workflows should be able to target a stable deployed base URL.
-- Report publishing can later point to MinIO on the same EC2 box without changing the overall orchestration model.
-- Docker Compose files may need a deployment-oriented variant separate from local development if host-specific concerns grow.
+- Deployment workflows should now be designed around image publication and kustomize-based Kubernetes deployment.
+- E2E and performance workflows should target the EC2 k3s environment through controlled tunnels or exposed service endpoints.
+- Reports are currently published to GitHub Pages from GitHub Actions.
+- Docker Compose remains useful for local or historical context, but it is no longer the primary hosted deployment model.
 
 ## Follow-Up
 
-- Add a GitHub Actions workflow that builds and pushes images to GHCR.
-- Add a deployment workflow that updates the EC2 host and restarts the stack.
-- Define Docker Compose image references for registry-pulled deployment.
-- Add GitHub secrets needed for EC2 access and registry authentication.
-- Update E2E and performance workflows to target the deployed environment instead of assuming a workflow-local stack.
-- Decide whether MinIO belongs in the deployed Compose stack immediately or after the base deploy flow is stable.
+- Keep the GHCR build-and-push workflow stable.
+- Keep the EC2 k3s deployment workflow stable.
+- Keep E2E and performance workflows targeting the deployed Kubernetes environment.
+- Keep k3s host setup documented enough that the environment can be recreated.

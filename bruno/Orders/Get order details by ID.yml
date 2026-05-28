@@ -40,14 +40,14 @@ examples:
             "created_at": "2025-03-20T14:30:00",
             "items": [
               {
-                "item_id": 1,
+                "product_id": 1,
                 "name": "Product A",
                 "quantity": 2,
                 "subtotal": 49.98,
                 "unit_price": 24.99
               },
               {
-                "item_id": 3,
+                "product_id": 3,
                 "name": "Product C",
                 "quantity": 1,
                 "subtotal": 9.99,
