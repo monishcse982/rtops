@@ -15,10 +15,10 @@ LOCUST_RUN_TIME="${LOCUST_RUN_TIME:-1m}"
 
 if [ "$#" -gt 0 ]; then
   echo "Running performance tests with custom Locust arguments..."
-  locust "$@"
+  uv run locust "$@"
 else
   echo "Running performance tests..."
-  locust \
+  uv run locust \
     --config "${LOCUST_CONFIG}" \
     --host "${LOCUST_HOST}" \
     --headless \
