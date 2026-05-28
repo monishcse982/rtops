@@ -1,0 +1,1 @@
+curl -X POST -H 'X-Request-ID: req-e2e-create-001' -H 'Content-Type: application/json' --data '{"items":[{"product_id":1,"quantity":1}]}' http://localhost:8000/api/orders/

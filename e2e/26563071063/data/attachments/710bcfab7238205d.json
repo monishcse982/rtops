@@ -1,0 +1,5 @@
+{
+  "actual": "Updated by E2E test",
+  "description": "updated product description matches request",
+  "expected": "Updated by E2E test"
+}

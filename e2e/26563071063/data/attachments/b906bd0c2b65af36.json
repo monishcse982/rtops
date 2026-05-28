@@ -1,0 +1,18 @@
+{
+  "body": {
+    "items": [],
+    "page": 3,
+    "page_size": 1,
+    "pages": 2,
+    "total": 2
+  },
+  "headers": {
+    "content-length": "55",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:17:16 GMT",
+    "server": "uvicorn",
+    "x-request-id": "eb1aa6fd-601d-46fd-97f4-93aef24a9d9d",
+    "x-trace-id": "eb1aa6fd-601d-46fd-97f4-93aef24a9d9d"
+  },
+  "status_code": 200
+}

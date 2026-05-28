@@ -1,0 +1,5 @@
+{
+  "actual": "created",
+  "description": "invalid transition leaves order status unchanged",
+  "expected": "created"
+}

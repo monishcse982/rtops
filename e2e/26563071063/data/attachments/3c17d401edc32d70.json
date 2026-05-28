@@ -1,0 +1,29 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "gt": 0
+        },
+        "input": -1,
+        "loc": [
+          "body",
+          "items",
+          0,
+          "quantity"
+        ],
+        "msg": "Input should be greater than 0",
+        "type": "greater_than"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "137",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:15:20 GMT",
+    "server": "uvicorn",
+    "x-request-id": "2879e3fe-c87e-4e6c-af74-a209e1aab5f7",
+    "x-trace-id": "2879e3fe-c87e-4e6c-af74-a209e1aab5f7"
+  },
+  "status_code": 422
+}

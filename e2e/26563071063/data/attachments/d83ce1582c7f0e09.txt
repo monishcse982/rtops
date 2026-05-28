@@ -1,0 +1,1 @@
+curl -X GET 'http://localhost:8000/api/products/?search=sort-asc-a2dff684&sort_by=price&sort_order=asc&page_size=100'

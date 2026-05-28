@@ -1,0 +1,5 @@
+{
+  "actual": "min_price cannot be greater than max_price",
+  "description": "invalid price range error message",
+  "expected": "min_price cannot be greater than max_price"
+}

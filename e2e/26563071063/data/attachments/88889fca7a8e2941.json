@@ -1,0 +1,5 @@
+{
+  "actual": "in_preparation",
+  "description": "persisted order status is in_preparation",
+  "expected": "in_preparation"
+}

@@ -1,0 +1,5 @@
+{
+  "actual": "order.created",
+  "description": "outbox event type is order.created",
+  "expected": "order.created"
+}

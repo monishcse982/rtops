@@ -1,0 +1,5 @@
+{
+  "actual": "e2e-product-0ecbb91a",
+  "description": "created product name matches request",
+  "expected": "e2e-product-0ecbb91a"
+}

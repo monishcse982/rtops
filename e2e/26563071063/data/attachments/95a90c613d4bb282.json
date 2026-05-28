@@ -1,0 +1,26 @@
+{
+  "body": {
+    "created_at": "2026-05-28T08:16:24.318859",
+    "items": [
+      {
+        "name": "Return Labels",
+        "product_id": 19,
+        "quantity": 2,
+        "subtotal": "23.60",
+        "unit_price": "11.80"
+      }
+    ],
+    "order_id": 51,
+    "status": "created",
+    "total_price": "23.60"
+  },
+  "headers": {
+    "content-length": "202",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:24 GMT",
+    "server": "uvicorn",
+    "x-request-id": "49da5634-e076-40af-9833-4a805f0bde97",
+    "x-trace-id": "49da5634-e076-40af-9833-4a805f0bde97"
+  },
+  "status_code": 200
+}

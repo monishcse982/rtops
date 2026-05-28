@@ -1,0 +1,11 @@
+{
+  "data": null,
+  "headers": {
+    "X-Request-ID": "req-order-details-001"
+  },
+  "json": null,
+  "method": "GET",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/orders/40"
+}

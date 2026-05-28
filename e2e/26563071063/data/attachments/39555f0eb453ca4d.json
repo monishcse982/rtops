@@ -1,0 +1,5 @@
+{
+  "actual": "req-e2e-create-001",
+  "description": "outbox request id matches custom request id",
+  "expected": "req-e2e-create-001"
+}

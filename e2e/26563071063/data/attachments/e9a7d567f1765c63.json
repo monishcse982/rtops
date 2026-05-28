@@ -1,0 +1,17 @@
+{
+  "body": {
+    "message": "Order marked as paid",
+    "order_id": 52,
+    "status": "in_preparation",
+    "tracking_info": null
+  },
+  "headers": {
+    "content-length": "95",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:28 GMT",
+    "server": "uvicorn",
+    "x-request-id": "12160d52-b4f8-4a8f-b213-e206c14b43c6",
+    "x-trace-id": "12160d52-b4f8-4a8f-b213-e206c14b43c6"
+  },
+  "status_code": 200
+}

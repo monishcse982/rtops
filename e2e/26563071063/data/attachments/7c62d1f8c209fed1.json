@@ -1,0 +1,36 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "error": {}
+        },
+        "input": [
+          {
+            "product_id": 1,
+            "quantity": 1
+          },
+          {
+            "product_id": 1,
+            "quantity": 2
+          }
+        ],
+        "loc": [
+          "body",
+          "items"
+        ],
+        "msg": "Value error, duplicate product_id values are not allowed",
+        "type": "value_error"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "212",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:15:14 GMT",
+    "server": "uvicorn",
+    "x-request-id": "eb24d54c-b421-4119-9ff7-922bc080f3bc",
+    "x-trace-id": "eb24d54c-b421-4119-9ff7-922bc080f3bc"
+  },
+  "status_code": 422
+}

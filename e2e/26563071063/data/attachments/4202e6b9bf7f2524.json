@@ -1,0 +1,26 @@
+{
+  "body": {
+    "created_at": "2026-05-28T08:15:27.306829",
+    "items": [
+      {
+        "name": "Starter Mug",
+        "product_id": 1,
+        "quantity": 1,
+        "subtotal": "12.50",
+        "unit_price": "12.50"
+      }
+    ],
+    "order_id": 40,
+    "status": "created",
+    "total_price": "12.50"
+  },
+  "headers": {
+    "content-length": "199",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:15:27 GMT",
+    "server": "uvicorn",
+    "x-request-id": "req-order-details-001",
+    "x-trace-id": "req-order-details-001"
+  },
+  "status_code": 200
+}

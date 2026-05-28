@@ -1,0 +1,17 @@
+{
+  "body": {
+    "message": "Order marked as shipped",
+    "order_id": 52,
+    "status": "shipped",
+    "tracking_info": null
+  },
+  "headers": {
+    "content-length": "91",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:30 GMT",
+    "server": "uvicorn",
+    "x-request-id": "539d57f7-f175-4019-8bbc-0b51991c6ec9",
+    "x-trace-id": "539d57f7-f175-4019-8bbc-0b51991c6ec9"
+  },
+  "status_code": 200
+}

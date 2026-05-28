@@ -1,0 +1,9 @@
+{
+  "data": null,
+  "headers": null,
+  "json": null,
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/orders/42/ready-to-ship"
+}

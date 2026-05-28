@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Blank name attempt",
+    "name": "   ",
+    "price": "10.00",
+    "stock": 1
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}

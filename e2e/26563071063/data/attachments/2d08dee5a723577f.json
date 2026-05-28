@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Product with name 'Office Chair Mat' already exists"
+  },
+  "headers": {
+    "content-length": "64",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:17:30 GMT",
+    "server": "uvicorn",
+    "x-request-id": "6c804c1e-4787-4e54-aae7-6ca2ee798e0d",
+    "x-trace-id": "6c804c1e-4787-4e54-aae7-6ca2ee798e0d"
+  },
+  "status_code": 409
+}

@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Order cannot be marked as shipped in its current state: created"
+  },
+  "headers": {
+    "content-length": "76",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:10 GMT",
+    "server": "uvicorn",
+    "x-request-id": "c2ff1727-340b-440b-98fa-91e2e8594cec",
+    "x-trace-id": "c2ff1727-340b-440b-98fa-91e2e8594cec"
+  },
+  "status_code": 400
+}

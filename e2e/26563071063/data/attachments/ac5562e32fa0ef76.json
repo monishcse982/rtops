@@ -1,0 +1,5 @@
+{
+  "actual": "49.99",
+  "description": "updated product price matches request",
+  "expected": "49.99"
+}

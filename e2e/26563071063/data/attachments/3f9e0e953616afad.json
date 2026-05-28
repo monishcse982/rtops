@@ -1,0 +1,5 @@
+{
+  "actual": "ready_to_ship",
+  "description": "ready-to-ship response status is ready_to_ship",
+  "expected": "ready_to_ship"
+}

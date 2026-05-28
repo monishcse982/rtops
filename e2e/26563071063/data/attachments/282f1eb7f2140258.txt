@@ -1,0 +1,1 @@
+curl -X POST -H 'Content-Type: application/json' --data '{"name":"e2e-product-0ecbb91a","description":"Created by E2E test","price":"19.99","stock":7}' http://localhost:8000/api/products/

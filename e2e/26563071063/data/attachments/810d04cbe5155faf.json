@@ -1,0 +1,20 @@
+{
+  "body": {
+    "created_at": "2026-05-25T18:31:37.714461",
+    "description": "Updated by E2E test",
+    "id": 1,
+    "name": "updated-product-dca75317",
+    "price": "49.99",
+    "stock": 11,
+    "updated_at": "2026-05-28T08:17:23.428725"
+  },
+  "headers": {
+    "content-length": "189",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:17:23 GMT",
+    "server": "uvicorn",
+    "x-request-id": "2ec0ae13-7095-4870-83fb-e455e0b06cc7",
+    "x-trace-id": "2ec0ae13-7095-4870-83fb-e455e0b06cc7"
+  },
+  "status_code": 200
+}

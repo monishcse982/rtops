@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-05-28T08:15:46.757005",
+  "event_type": "order.shipped",
+  "id": 8,
+  "last_error": null,
+  "payload": {
+    "event": "order.shipped",
+    "order_id": 43,
+    "request_id": "85b0263a-a83b-43a1-878c-ab940455f2cb",
+    "timestamp": "2026-05-28T08:15:46.756013+00:00"
+  },
+  "publish_attempts": 1,
+  "published_at": "2026-05-28T08:15:46.760434",
+  "request_id": "85b0263a-a83b-43a1-878c-ab940455f2cb"
+}

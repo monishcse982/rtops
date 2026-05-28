@@ -1,0 +1,20 @@
+{
+  "body": {
+    "created_at": "2026-05-25T18:31:37.714461",
+    "description": "Entry-level ceramic mug for daily use",
+    "id": 1,
+    "name": "Starter Mug",
+    "price": "12.50",
+    "stock": 250,
+    "updated_at": null
+  },
+  "headers": {
+    "content-length": "171",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:17:20 GMT",
+    "server": "uvicorn",
+    "x-request-id": "51ace00b-a8b0-48fc-85bb-0569cc718216",
+    "x-trace-id": "51ace00b-a8b0-48fc-85bb-0569cc718216"
+  },
+  "status_code": 200
+}

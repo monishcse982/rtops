@@ -1,0 +1,20 @@
+{
+  "body": {
+    "created_at": "2026-05-28T08:16:34.170484",
+    "description": "Created by E2E test",
+    "id": 62,
+    "name": "e2e-product-0ecbb91a",
+    "price": "19.99",
+    "stock": 7,
+    "updated_at": null
+  },
+  "headers": {
+    "content-length": "161",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:34 GMT",
+    "server": "uvicorn",
+    "x-request-id": "16467752-5cc2-47ff-ad4e-217485c320c4",
+    "x-trace-id": "16467752-5cc2-47ff-ad4e-217485c320c4"
+  },
+  "status_code": 201
+}

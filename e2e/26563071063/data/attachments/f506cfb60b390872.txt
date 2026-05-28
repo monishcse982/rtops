@@ -1,0 +1,1 @@
+curl -X PUT -H 'Content-Type: application/json' --data '{"name":"Office Chair Mat","description":"Vacuum flask for commuters","price":"29.90","stock":140}' http://localhost:8000/api/products/2

@@ -1,0 +1,27 @@
+{
+  "body": {
+    "detail": [
+      {
+        "ctx": {
+          "min_length": 1
+        },
+        "input": "",
+        "loc": [
+          "body",
+          "name"
+        ],
+        "msg": "String should have at least 1 character",
+        "type": "string_too_short"
+      }
+    ]
+  },
+  "headers": {
+    "content-length": "144",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:17:34 GMT",
+    "server": "uvicorn",
+    "x-request-id": "a3ae377f-2472-4d42-9dfd-0732312e4739",
+    "x-trace-id": "a3ae377f-2472-4d42-9dfd-0732312e4739"
+  },
+  "status_code": 422
+}

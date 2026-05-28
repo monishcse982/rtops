@@ -1,0 +1,5 @@
+{
+  "actual": 0,
+  "description": "failed create does not write outbox events",
+  "expected": 0
+}

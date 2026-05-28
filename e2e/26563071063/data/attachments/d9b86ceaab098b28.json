@@ -1,0 +1,14 @@
+{
+  "body": {
+    "detail": "Product with name 'Starter Mug' already exists"
+  },
+  "headers": {
+    "content-length": "59",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:16:37 GMT",
+    "server": "uvicorn",
+    "x-request-id": "f9d82a05-8765-4591-a4f9-929407866e9c",
+    "x-trace-id": "f9d82a05-8765-4591-a4f9-929407866e9c"
+  },
+  "status_code": 409
+}

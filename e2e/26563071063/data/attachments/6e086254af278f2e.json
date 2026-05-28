@@ -1,0 +1,5 @@
+{
+  "actual": "Travel Flask",
+  "description": "product name remains unchanged after conflict",
+  "expected": "Travel Flask"
+}

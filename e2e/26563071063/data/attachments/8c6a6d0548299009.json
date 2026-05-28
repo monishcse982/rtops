@@ -1,0 +1,14 @@
+{
+  "body": {
+    "status": "ok"
+  },
+  "headers": {
+    "content-length": "15",
+    "content-type": "application/json",
+    "date": "Thu, 28 May 2026 08:14:51 GMT",
+    "server": "uvicorn",
+    "x-request-id": "926e772a-b7c6-4fe8-80e3-09c8d0249797",
+    "x-trace-id": "926e772a-b7c6-4fe8-80e3-09c8d0249797"
+  },
+  "status_code": 200
+}

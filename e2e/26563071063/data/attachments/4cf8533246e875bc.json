@@ -1,0 +1,14 @@
+{
+  "data": null,
+  "headers": null,
+  "json": {
+    "description": "Duplicate attempt",
+    "name": "Starter Mug",
+    "price": "12.50",
+    "stock": 3
+  },
+  "method": "POST",
+  "params": null,
+  "timeout": 10.0,
+  "url": "http://localhost:8000/api/products/"
+}
