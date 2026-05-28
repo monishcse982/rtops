@@ -13,9 +13,6 @@ concurrency:
 jobs:
   perf:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/perf/${{ github.run_id }}/
 
     steps:
       - name: Checkout repository
